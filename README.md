@@ -1,24 +1,25 @@
-# :checkered_flag: NOME DO PROJETO
+# :checkered_flag: Meculator Web
 
-Breve descrição do que o seu projeto faz.
+A web application of a mechanics calculator. 
 
-## :technologist: Membros da equipe
+## :technologist: Stanz
 
-Matrícula, nome e curso dos participantes.
+556361, Stanz CC.
 
 ## :people_holding_hands: Papéis ou tipos de usuário da aplicação
 
-Informe aqui os tipos de usuário que irão interagir com a aplicação. Ex: administrador, locador, locatario, usuário não logado.
+Initially this application should accept only signed users, admin required.
 
 > Tenha em mente que obrigatoriamente a aplicação deve possuir funcionalidades acessíveis a todos os tipos de usuário e outra funcionalidades restritas a certos tipos de usuários.
 
 ## :spiral_calendar: Entidades ou tabelas do sistema
 
-Liste as principais entidades do sistema.
+Users, vectors, momentum, units, planes/dimensions.
 
 ## :triangular_flag_on_post:	 Principais funcionalidades da aplicação
 
-Descreve ou liste brevemente as principais funcionalidades da aplicação que será desenvolvida. Destaque a funcionalidades que serão acessévies a todos os usuários e aquelas restriras a usuários logados.
+Initially capable of accepting and manipulating vectors and momentums and making unit convertions, all focused on physics applications.
+Each user shoud be capable of using/accessing the tables that they have created.
 
 
 ----
