@@ -8,13 +8,13 @@ A web application of a mechanics calculator.
 
 ## :people_holding_hands: Papéis ou tipos de usuário da aplicação
 
-Initially this application should accept only signed users, admin required.
+Initially this application should accept only signed users and the required admin.
 
 > Tenha em mente que obrigatoriamente a aplicação deve possuir funcionalidades acessíveis a todos os tipos de usuário e outra funcionalidades restritas a certos tipos de usuários.
 
 ## :spiral_calendar: Entidades ou tabelas do sistema
 
-Users, vectors, momentum, units, planes/dimensions.
+Users, vectors, momentum, planes/dimensions.
 
 ## :triangular_flag_on_post:	 Principais funcionalidades da aplicação
 
