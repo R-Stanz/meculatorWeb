@@ -4,7 +4,7 @@ html {
 
 body {
 	margin: auto;
-	background-color: #000000;
+	background-color: #0000;
 }
 
 nav {
@@ -19,7 +19,6 @@ nav {
 a.login {
 	background-color: #324A5F;
 	text-decoration: none;
-	height: 3vh;
 	color: white;
 	border: 1ex solid #324A5F;
 	border-radius: 0 5ex 5ex 0;
@@ -48,7 +47,6 @@ main {
 }
 
 a#init_msg {
-
 	display: block;
 	font-size: 2em;
 	margin-top: 0.67em;
@@ -72,13 +70,47 @@ a#init_msg:hover {
 }
 
 section#intro {
-	background-color: #324A5F;
+	background-color: #1B2A41;
 	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 	height: 100vh;
 	width: 100vw;
 	color: white;
 }
 
+div#decription {
+	background-color: #324A5F;
+	text-align: center;
+	padding: 1vh 3vw 1vh 3vw;
+	border-radius: 2ex;
+	margin: 20vh 15vw 0 15vw;
+}
+
+p {
+	font-size:1.2em;
+	text-align: justify;
+}
+
 span {
 	font-weight: bold;
+}
+
+a#git {
+	display: block;
+	font-size: 1.4em;
+	font-weight: bold;
+	text-decoration: none;
+	color: #FFFFFF;
+
+	background-color: #324A5F;
+	text-align: center;
+	padding: 1vh 3vw 1vh 3vw;
+	border-radius: 2ex;
+	margin: 10vh;
+}
+
+a#git:hover {
+	background-color: #0C1821;
 }

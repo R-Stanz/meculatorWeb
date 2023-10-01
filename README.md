@@ -14,7 +14,7 @@ Initially this application should accept only signed users and the required admi
 
 ## :spiral_calendar: Entidades ou tabelas do sistema
 
-Users, vectors, momentum, planes/dimensions.
+Users, vectors, moments of force, planes/dimensions.
 
 ## :triangular_flag_on_post:	 Principais funcionalidades da aplicação
 
