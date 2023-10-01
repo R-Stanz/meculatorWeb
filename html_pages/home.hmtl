@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title> Meculator </title>
+	<link rel="stylesheet" href="home.css">
+	<meta charset="UTF-8">
+</head>
+<body>
+	<nav>
+		<a class="login" href="login.html">Login</a>
+		<a class="login" id="sign_in" href="sign_in.html">Sign-in</a>
+	</nav>
+
+	<main id="section1">
+			<a id="init_msg" href="#intro">
+				Welcome To<br/>Meculator
+			</a>
+	</main>
+
+	<section id="intro">
+		<div id="decription">
+			<h2> What it is... </h2>
+			<p> 	
+				The meculator is a calculator foucused on
+				solving physical problems, mainly those
+				involving concepts of <span> statics</span>.
+			</p>
+			<p>
+				Initially there only simple operations with
+				vectors and moments of force. Checkout the
+				github of this project by clicking on the
+				buttom bellow.
+			</p>
+		</div>
+	</section>
+</body>
+</html>

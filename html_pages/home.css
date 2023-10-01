@@ -1,0 +1,84 @@
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: auto;
+	background-color: #000000;
+}
+
+nav {
+	background-color: #324A5F;
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	top: 0;
+	width: 100%;
+}
+
+a.login {
+	background-color: #324A5F;
+	text-decoration: none;
+	height: 3vh;
+	color: white;
+	border: 1ex solid #324A5F;
+	border-radius: 0 5ex 5ex 0;
+	width: 50vw;
+	text-align: center;
+	display: inline-block;
+}
+
+a.login:hover {
+	background-color: #1B2A41;
+	border: 1ex solid #1B2A41;
+}
+
+a#sign_in {
+	border-radius: 2vh 0 0 2vh;
+}
+
+main {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	height: 100vh;
+	min-height: 100vh;
+	padding: 30vh 25vh 0vh 25vh;
+	background-color: #0C1821;
+}
+
+a#init_msg {
+
+	display: block;
+	font-size: 2em;
+	margin-top: 0.67em;
+	margin-bottom: 0.67em;
+	margin-left: 0;
+	margin-right: 0;
+	font-weight: bold;
+	text-decoration: none;
+
+	color: #FFFFFF;
+	text-align: center;
+	background-color: #1B2A41;
+	border: 2vw solid #1B2A41;
+	border-radius: 3ex;
+	padding: 5vh 10vw;
+}
+
+a#init_msg:hover {
+	background-color: #324A5F;
+	border: 2ex solid #324A5F;
+}
+
+section#intro {
+	background-color: #324A5F;
+	display: flex;
+	height: 100vh;
+	width: 100vw;
+	color: white;
+}
+
+span {
+	font-weight: bold;
+}
