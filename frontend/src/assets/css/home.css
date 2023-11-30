@@ -1,0 +1,121 @@
+
+
+nav {
+	background-color: #324A5F;
+	display: flex;
+	justify-content: space-between;
+	position: fixed;
+	top: 0;
+	width: 100%;
+}
+
+.login {
+	background-color: #324A5F;
+	text-decoration: none;
+	color: white;
+	border: 1ex solid #324A5F;
+	border-radius: 0 5ex 5ex 0;
+	width: 50vw;
+	text-align: center;
+	display: inline-block;
+}
+
+.login:hover {
+	background-color: #1B2A41;
+	border: 1ex solid #1B2A41;
+}
+
+#sign_up {
+	border-radius: 5ex 0 0 5ex;
+}
+
+main {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	height: 100vh;
+	min-height: 100vh;
+	width: 100vw;
+	min-width: 100vw;
+	padding: 30vh 25vh 0vh 25vh;
+	background-color: #0C1821;
+}
+
+a#init_msg {
+	display: block;
+	font-size: 2em;
+	margin-top: 0.67em;
+	margin-bottom: 0.67em;
+	margin-left: 0;
+	margin-right: 0;
+	font-weight: bold;
+	text-decoration: none;
+
+	color: #FFFFFF;
+	text-align: center;
+	background-color: #1B2A41;
+	border: 2vw solid #1B2A41;
+	border-radius: 3ex;
+	padding: 5vh 10vw;
+}
+
+a#init_msg:hover {
+	background-color: #324A5F;
+	border: 2ex solid #324A5F;
+}
+
+section#intro {
+	background-color: #1B2A41;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	height: 100vh;
+	width: 100vw;
+	color: white;
+}
+
+div#decription {
+	background-color: #324A5F;
+	text-align: center;
+	padding: 2vh 3vw 6vh 3vw;
+	border-radius: 2ex;
+	margin: 20vh 15vw 0 15vw;
+}
+
+div#decription h2 {
+	font-weight: bold;
+	padding-bottom: 3vh;
+	padding-top: 3vh;
+}
+
+div#decription + p {
+	padding-top: 3vh;
+}
+
+p {
+	font-size:1.2em;
+	text-align: justify;
+}
+
+span {
+	font-weight: bold;
+}
+
+a#git {
+	display: block;
+	font-size: 1.4em;
+	font-weight: bold;
+	text-decoration: none;
+	color: #FFFFFF;
+
+	background-color: #324A5F;
+	text-align: center;
+	padding: 1vh 3vw 1vh 3vw;
+	border-radius: 2ex;
+	margin: 10vh;
+}
+
+a#git:hover {
+	background-color: #0C1821;
+}
