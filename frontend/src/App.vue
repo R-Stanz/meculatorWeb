@@ -3,10 +3,11 @@
 </template>
 
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+	import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <style>
+@import "bootstrap-icons/font/bootstrap-icons.css";
 html {
 	scroll-behavior: smooth;
 }

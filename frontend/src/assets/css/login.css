@@ -44,6 +44,9 @@ div#top {
 	font-size: 3em;
 	color: #0C1821;
 
+	border: 1px solid #324A5F;
+	border-radius: 1ex 0 0 0;
+
 	-webkit-transition: none !important;
 	-moz-transition: none !important;
 	-o-transition: none !important;
