@@ -33,11 +33,11 @@ Each user shoud be capable of using/accessing the tables that they have created.
 
 **Frontend:**
 
-Lista as tecnologias, frameworks e bibliotecas utilizados.
+Vue, Html, Css, Vue Router, Vee-validate, Bootstrap Icons.
 
 **Backend:**
 
-Lista as tecnologias, frameworks e bibliotecas utilizados.
+Strapi.
 
 
 ## :shipit: Operações implementadas para cada entidade da aplicação
