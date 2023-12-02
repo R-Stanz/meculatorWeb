@@ -2,19 +2,23 @@ body {
 	background-color: #0C1821;
 	margin: auto;
 	color: #FFFFFF;
+	display: inline;
 }
 
 nav {
-	background-color: #0C1821;
+	background-color: #1B2A41;
 	display: flex;
 	justify-content: space-between;
 	position: fixed;
 	top: 0;
 	width: 100%;
+	margin: 0;
 }
 
 p#account_mode {
 	font-size: 1.2em;
+	vertical-align: middle;
+	margin: auto;
 }
 
 a#log_out {
@@ -23,8 +27,8 @@ a#log_out {
 	padding-left: 4vw;
 	text-decoration: none;
 	color: #FFFFFF;
-	border-bottom: 1px solid #324A5F;
-	border-right: 1px solid #324A5F;
+	border-bottom: 1px solid #1B2A41;
+	border-right: 1px solid #0C1821;
 	border-radius: 0 0 2px 2px;
 }
 
@@ -42,6 +46,7 @@ main {
 	padding-top: 4em;
 	display: flex;
 	background-color: rgba(0, 0, 0, 0.3);
+	width: 100vw;
 }
 
 aside {
@@ -61,6 +66,10 @@ label#label_delete_account {
 	font-weight: bold;
 }
 
+label#del_conf {
+	margin-right: 1em;
+}
+
 input#username {
 	color: red;
 	font-weight: bold;
@@ -72,10 +81,6 @@ input[type="submit"] {
 }
 
 @media screen and (max-width: 900px) {
-	nav {
-		background-color: #1B2A41;
-	}
-
 	main {
 		flex-direction: column;
 	}

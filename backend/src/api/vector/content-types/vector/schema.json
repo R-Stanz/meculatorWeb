@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "vectors",
+  "info": {
+    "singularName": "vector",
+    "pluralName": "vectors",
+    "displayName": "Vector",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "default": "generic"
+    },
+    "vector_id": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::static-entity.static-entity"
+    }
+  }
+}

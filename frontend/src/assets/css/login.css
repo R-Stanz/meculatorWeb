@@ -137,3 +137,20 @@ input[type="submit"]:hover {
 		flex: 2;
 	}
 }
+
+@media screen and (max-height: 550px) {
+	body {
+		height: 700px;
+	}
+
+	main {
+		width: 450px;
+		height: 500px;
+		margin: 5vh auto auto auto;
+	}
+
+	form {
+		flex: 10;
+	}
+
+}

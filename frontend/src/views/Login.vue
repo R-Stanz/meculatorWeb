@@ -3,7 +3,7 @@
 
 	<main class="flex">
 		<div class="flex row" id="top">
-			<router-link id="go_home" to="/">
+			<router-link id="go_home" :to="{ name: 'home' }">
 				<i class="bi bi-caret-left"></i>
 			</router-link>
 			<div id="empty"></div>

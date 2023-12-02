@@ -10,11 +10,15 @@ nav {
 	justify-content: space-between;
 	position: fixed;
 	top: 0;
-	width: 100%;
+	width: 100vw;
 }
 
 p#account_mode {
 	font-size: 1.2em;
+	height: 100%;
+	line-height: auto;
+	vertical-align: middle;
+	text-align: center;
 }
 
 a#log_out {
@@ -42,6 +46,7 @@ main {
 	padding-top: 4em;
 	display: flex;
 	background-color: rgba(0, 0, 0, 0.3);
+	width: 100vw;
 }
 
 aside {

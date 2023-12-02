@@ -2,10 +2,10 @@
 	<body>
 
 		<nav>
-			<router-link class="login" to="/login">
+			<router-link class="login" :to="{ name: 'login' }">
 				Login
 			</router-link>
-			<router-link class="login" id="sign_up" to="/sign_up">
+			<router-link class="login" id="sign_up" :to="{ name: 'sign_up' }">
 				Sign-up
 			</router-link>
 		</nav>
