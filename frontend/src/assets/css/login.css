@@ -46,11 +46,6 @@ div#top {
 
 	border: 1px solid #324A5F;
 	border-radius: 1ex 0 0 0;
-
-	-webkit-transition: none !important;
-	-moz-transition: none !important;
-	-o-transition: none !important;
-	transition: none !important;
 }
 
 #go_home:hover {
@@ -74,57 +69,64 @@ h1 {
 	color: white;
 }
 
-form {
+#form {
 	flex: 4;
+	flex-direction: column;
+	display: flex;
+	margin: 3em 0 3em 0;
+}
+
+section {
+	flex: 5;
 	display: flex;
 	flex-direction: column;
 	background-color: #1B2A41;
 
-	margin: 3em 0 3em 0;
-	border-radius: 1em;
+	border-radius: 1em 1em 0 0;
 	color: white;
-	justify-items: center;
+	justify-content: space-evenly;
 }
 
-form label {
+div {
+	display: grid;
+}
+
+#form label {
 	text-align: center;
 	font-size: 1.6em;
-	margin: 1;
-	padding-top: 0.8em;
 }
 
-input[type="text"] {
+.input {
 	font-size: 1em;
 	margin-left: 2em;
 	margin-right: 2em;
 	border-radius: 0.5em;
 }
 
-input[type="password"] {
-	margin: 0 0 1.4em 0;
-	font-size: 1em;
-	margin-left: 2em;
-	margin-right: 2em;
-	border-radius: 0.5em;
+.required {
+	color: red;
+	text-align: center;
 }
 
-input[type="submit"] {
-	background-color: transparent;
+button[type="submit"] {
+	flex: 2;
+	justify-self: start;
+	margin: 0;
+	background-color: #1b2a41;
 	font-size: 1em;
 	font-weight: bold;
-	border: none;
+	border: 2px solid transparent;
 	border-top: 2px solid #324A5F;
-	border-radius: 0 0 1em 1em;
+	border-radius: 0 0 0.5em 0.5em;
 	height: 100%;
 	color: white;
 	font-size: 1.3em;
 }
 
-input[type="submit"]:hover {
+button[type="submit"]:hover {
 	color: white;
 	background-color: #324A5F;
-	border: 2px solid #1B2A41;
-	border-radius: 0 0 0.5em 0.5em;
+	border: 2px solid #1b2a41;
 }
 
 @media screen and (max-width: 900px) {
