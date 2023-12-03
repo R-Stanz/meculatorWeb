@@ -33,7 +33,7 @@ Each user shoud be capable of using/accessing the tables that they have created.
 
 **Frontend:**
 
-Vue, Html, Css, Vue Router, Vee-validate, Bootstrap Icons.
+Vue, Html, Css, Vue-router, Vee-validate, Vee-validate rules, Bootstrap Icons, Vite, Eslint, Prettier, Pinia.
 
 **Backend:**
 

@@ -21,17 +21,17 @@ main {
 div#top {
 	flex: 1;
 	display: flex;
+	flex-direction: row;
 	width: 100%;
-	justify-content: center;
-	justify-items: flex-start;
+	justify-content: space-between;
 	align-items: center;
 
 	border-bottom: 1em solid #0C1821;
 }
 
 #go_home {
-	height: 100%;
 	flex: 1;
+	height: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -58,6 +58,26 @@ div#top {
 
 div#empty {
 	flex: 2;
+	width: 100%;
+}
+
+.success {
+	flex: 2;
+	height: 100%;
+	background-color: green;
+	vertical-align: middle;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	justify-items: center;
+
+	text-align: center;
+	font-weight: bold;
+	font-size: 1.2em;
+	color: #000000;
+
+	border-radius: 0 2ex 0 0;
+	border: 1px solid green;
 }
 
 h1 {
@@ -87,7 +107,7 @@ section {
 	justify-content: space-evenly;
 }
 
-div {
+.input_div {
 	display: grid;
 }
 
@@ -112,11 +132,11 @@ button[type="submit"] {
 	flex: 2;
 	justify-self: start;
 	margin: 0;
-	background-color: #1b2a41;
+	background-color: #1B2A41;
 	font-size: 1em;
 	font-weight: bold;
 	border: 2px solid transparent;
-	border-top: 2px solid #324A5F;
+	border-top: 2px solid #0C1821;
 	border-radius: 0 0 0.5em 0.5em;
 	height: 100%;
 	color: white;
@@ -125,8 +145,8 @@ button[type="submit"] {
 
 button[type="submit"]:hover {
 	color: white;
-	background-color: #324A5F;
-	border: 2px solid #1b2a41;
+	background-color: #0C1821;
+	border: 2px solid #1B2A41;
 }
 
 @media screen and (max-width: 900px) {
