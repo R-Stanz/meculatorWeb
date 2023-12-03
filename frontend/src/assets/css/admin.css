@@ -6,7 +6,7 @@ body {
 }
 
 nav {
-	background-color: #1B2A41;
+	background-color: #0C1821;
 	display: flex;
 	justify-content: space-between;
 	position: fixed;
@@ -28,7 +28,7 @@ a#log_out {
 	text-decoration: none;
 	color: #FFFFFF;
 	border-bottom: 1px solid #1B2A41;
-	border-right: 1px solid #0C1821;
+	border-right: 1px solid #1B2A41;
 	border-radius: 0 0 2px 2px;
 }
 
@@ -56,28 +56,70 @@ aside {
 	border-right: 2px solid #0C1821;
 }
 
+.success {
+	background-color: green;
+	color: #000000;
+	border-radius: 2em;
+	text-align: center;
+}
+
+#new_admin_form {
+	display: grid;
+	justify-content: space-evenly;
+}
+
+.camps {
+	display: flex;
+	flex-direction: column;
+}
+
+.error {
+	color: red;
+}
+
+button#create {
+	margin-top: 1em;
+}
+
 section {
 	flex: 2;
+	display: flex;
+	flex-direction: column;
 	padding: 1em;
 }
 
-label#label_delete_account {
+#del_form {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	height: 100%;
+}
+
+.del_wrapper{
+	display: inline-grid;
+}
+
+#label_delete_account {
 	color: red;
 	font-weight: bold;
 }
 
-label#del_conf {
+#del_conf {
 	margin-right: 1em;
 }
 
-input#username {
+#username {
 	color: red;
 	font-weight: bold;
 }
 
-input[type="submit"] {
-	margin: 1em;
-	margin-bottom: 0.5em;
+#row {
+	align-self: end;
+	flex-basis: 0;
+}
+
+#row > button[type="submit"] {
+	margin-left: 1em;
 }
 
 @media screen and (max-width: 900px) {

@@ -5,7 +5,7 @@
 
 	<main id="functions">
 		<NewAdmin></NewAdmin>
-		<DeleteAccounts></DeleteAccounts>
+		<DelAccounts></DelAccounts>
 	</main>
 
 </body>
@@ -17,13 +17,13 @@
 <script>
 import AdminBar from '@/components/AdminBar.vue'
 import NewAdmin from '@/components/NewAdminArea.vue'
-import DeleteAccounts from '@/components/DeleteAccountsArea.vue'
+import DelAccounts from '@/components/DeleteAccountsArea.vue'
 
 export default {
 	components: {
 		AdminBar,
 		NewAdmin,
-		DeleteAccounts,
+		DelAccounts,
 	}
 }
 </script>
