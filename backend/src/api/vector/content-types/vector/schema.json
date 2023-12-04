@@ -8,19 +8,78 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "name": {
+    "magnitude": {
+      "type": "float",
+      "default": 0,
+      "required": true
+    },
+    "magnitude_unit": {
+      "type": "string",
+      "required": true
+    },
+    "magnitude_i": {
+      "type": "float",
+      "required": true,
+      "default": 0
+    },
+    "magnitude_j": {
+      "type": "float",
+      "default": 0,
+      "required": true
+    },
+    "magnitude_j_unit": {
+      "type": "string",
+      "required": true
+    },
+    "magnitude_k": {
+      "type": "float",
+      "required": true,
+      "default": 0
+    },
+    "magnitude_k_unit": {
+      "type": "string",
+      "required": true
+    },
+    "angle_xy_plane": {
+      "type": "float",
+      "required": true,
+      "default": 0
+    },
+    "angle_xy_plane_unit": {
+      "type": "string",
+      "required": true
+    },
+    "angle_xz_plane": {
+      "type": "float",
+      "required": true,
+      "default": 0
+    },
+    "angle_xz_plane_unit": {
+      "type": "string",
+      "required": true
+    },
+    "angle_yz_plane": {
+      "type": "float",
+      "default": 0,
+      "required": true
+    },
+    "angle_yz_plane_unit": {
+      "type": "string",
+      "required": true
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "vector_name": {
       "type": "string",
       "required": true,
       "default": "generic"
-    },
-    "vector_id": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::static-entity.static-entity"
     }
   }
 }

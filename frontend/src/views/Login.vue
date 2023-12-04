@@ -67,11 +67,14 @@
 </style>
 
 <script>
+import { ref, computed } from 'vue'
+import { isAxiosError } from 'axios'
+
 export default {
 	data() {
 		return {
 			schema: {
-				username: "required|min:3|max:40",
+				username: "required|min:3|max:40|alpha_dash",
 				password: "required|min:6|max:50"
 			},
 

@@ -84,17 +84,20 @@ export default {
 	},
 	methods: {
 		register(values) {
-			this.reg_show_alert = true
-			this.reg_in_submission = true
-			this.reg_alert_variant = "info"
-			this.reg_alert_msg = "Account being created!"
+			this.reg_show_alert 	= true
+			this.reg_in_submission 	= true
+			this.reg_alert_variant 	= "info"
+			this.reg_alert_msg 	= "Account being created!"
 
 			this.reg_alert_variant = "success"
 			this.reg_alert_msg = "Account created!"
 
 			setTimeout(function () {
-				this.$router.push({ name: "login" })
-				}.bind(this), 7000)
+					this.reg_in_submission	= false
+					this.reg_show_alert 		= false
+					this.reg_alert_variant 	= "info"
+					this.reg_alert_msg 		= "Account being created!"
+				}.bind(this), 2000)
 
 		},
 	},

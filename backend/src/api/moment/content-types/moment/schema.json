@@ -8,24 +8,82 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
-    "moment_id": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::static-entity.static-entity"
+    "magnitude": {
+      "type": "float",
+      "required": true,
+      "default": 0
+    },
+    "magnitude_unit": {
+      "type": "string",
+      "required": true
+    },
+    "magnitude_i": {
+      "type": "float",
+      "required": true,
+      "default": 0
+    },
+    "magnitude_i_unit": {
+      "type": "string",
+      "required": true
+    },
+    "magnitude_j": {
+      "type": "float",
+      "default": 0,
+      "required": true
+    },
+    "magnitude_j_unit": {
+      "type": "string",
+      "required": true
+    },
+    "magnitude_k": {
+      "type": "float",
+      "required": true,
+      "default": 0
+    },
+    "angle_xy_plane": {
+      "type": "float",
+      "required": true,
+      "default": 0
+    },
+    "angle_xy_plane_unit": {
+      "type": "string",
+      "required": true
+    },
+    "angle_xz_plane": {
+      "type": "float",
+      "default": 0,
+      "required": true
+    },
+    "angle_xz_plane_unit": {
+      "type": "string",
+      "required": true
+    },
+    "angle_yz_plane": {
+      "type": "float",
+      "default": 0,
+      "required": true
+    },
+    "angle_yz_plane_unit": {
+      "type": "string",
+      "required": true
     },
     "is_torque": {
       "type": "boolean",
-      "default": false,
       "required": true
     },
-    "name": {
+    "owner": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "moment_name": {
       "type": "string",
-      "default": "generic",
-      "required": true
+      "required": true,
+      "default": "generic"
     }
   }
 }

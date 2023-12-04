@@ -8,6 +8,7 @@
 
 <style>
 @import "bootstrap-icons/font/bootstrap-icons.css";
+
 html {
 	scroll-behavior: smooth;
 }

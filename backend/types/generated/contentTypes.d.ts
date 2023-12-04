@@ -362,6 +362,121 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
+export interface ApiMomentMoment extends Schema.CollectionType {
+  collectionName: 'moments';
+  info: {
+    singularName: 'moment';
+    pluralName: 'moments';
+    displayName: 'Moment';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    magnitude: Attribute.Float & Attribute.Required & Attribute.DefaultTo<0>;
+    magnitude_unit: Attribute.String & Attribute.Required;
+    magnitude_i: Attribute.Float & Attribute.Required & Attribute.DefaultTo<0>;
+    magnitude_i_unit: Attribute.String & Attribute.Required;
+    magnitude_j: Attribute.Float & Attribute.Required & Attribute.DefaultTo<0>;
+    magnitude_j_unit: Attribute.String & Attribute.Required;
+    magnitude_k: Attribute.Float & Attribute.Required & Attribute.DefaultTo<0>;
+    angle_xy_plane: Attribute.Float &
+      Attribute.Required &
+      Attribute.DefaultTo<0>;
+    angle_xy_plane_unit: Attribute.String & Attribute.Required;
+    angle_xz_plane: Attribute.Float &
+      Attribute.Required &
+      Attribute.DefaultTo<0>;
+    angle_xz_plane_unit: Attribute.String & Attribute.Required;
+    angle_yz_plane: Attribute.Float &
+      Attribute.Required &
+      Attribute.DefaultTo<0>;
+    angle_yz_plane_unit: Attribute.String & Attribute.Required;
+    is_torque: Attribute.Boolean & Attribute.Required;
+    owner: Attribute.Relation<
+      'api::moment.moment',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    moment_name: Attribute.String &
+      Attribute.Required &
+      Attribute.DefaultTo<'generic'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::moment.moment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::moment.moment',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiVectorVector extends Schema.CollectionType {
+  collectionName: 'vectors';
+  info: {
+    singularName: 'vector';
+    pluralName: 'vectors';
+    displayName: 'Vector';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    magnitude: Attribute.Float & Attribute.Required & Attribute.DefaultTo<0>;
+    magnitude_unit: Attribute.String & Attribute.Required;
+    magnitude_i: Attribute.Float & Attribute.Required & Attribute.DefaultTo<0>;
+    magnitude_j: Attribute.Float & Attribute.Required & Attribute.DefaultTo<0>;
+    magnitude_j_unit: Attribute.String & Attribute.Required;
+    magnitude_k: Attribute.Float & Attribute.Required & Attribute.DefaultTo<0>;
+    magnitude_k_unit: Attribute.String & Attribute.Required;
+    angle_xy_plane: Attribute.Float &
+      Attribute.Required &
+      Attribute.DefaultTo<0>;
+    angle_xy_plane_unit: Attribute.String & Attribute.Required;
+    angle_xz_plane: Attribute.Float &
+      Attribute.Required &
+      Attribute.DefaultTo<0>;
+    angle_xz_plane_unit: Attribute.String & Attribute.Required;
+    angle_yz_plane: Attribute.Float &
+      Attribute.Required &
+      Attribute.DefaultTo<0>;
+    angle_yz_plane_unit: Attribute.String & Attribute.Required;
+    owner: Attribute.Relation<
+      'api::vector.vector',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    vector_name: Attribute.String &
+      Attribute.Required &
+      Attribute.DefaultTo<'generic'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::vector.vector',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::vector.vector',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -677,138 +792,6 @@ export interface PluginI18NLocale extends Schema.CollectionType {
   };
 }
 
-export interface ApiMomentMoment extends Schema.CollectionType {
-  collectionName: 'moments';
-  info: {
-    singularName: 'moment';
-    pluralName: 'moments';
-    displayName: 'Moment';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    moment_id: Attribute.Relation<
-      'api::moment.moment',
-      'oneToOne',
-      'api::static-entity.static-entity'
-    >;
-    is_torque: Attribute.Boolean &
-      Attribute.Required &
-      Attribute.DefaultTo<false>;
-    name: Attribute.String &
-      Attribute.Required &
-      Attribute.DefaultTo<'generic'>;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::moment.moment',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::moment.moment',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiStaticEntityStaticEntity extends Schema.CollectionType {
-  collectionName: 'static_entities';
-  info: {
-    singularName: 'static-entity';
-    pluralName: 'static-entities';
-    displayName: 'static_entity';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    owner: Attribute.Relation<
-      'api::static-entity.static-entity',
-      'oneToOne',
-      'plugin::users-permissions.user'
-    >;
-    magnitude: Attribute.Float & Attribute.Required & Attribute.DefaultTo<0>;
-    magnitude_unit: Attribute.String & Attribute.Required;
-    magnitude_i: Attribute.Float & Attribute.Required & Attribute.DefaultTo<0>;
-    magnitude_i_unit: Attribute.String & Attribute.Required;
-    magnitude_j: Attribute.Float & Attribute.Required & Attribute.DefaultTo<0>;
-    magnitude_j_unit: Attribute.String & Attribute.Required;
-    magnitude_k: Attribute.Float & Attribute.Required & Attribute.DefaultTo<0>;
-    magnitude_k_unit: Attribute.String & Attribute.Required;
-    angle_xy_plane: Attribute.Float &
-      Attribute.Required &
-      Attribute.DefaultTo<0>;
-    angle_xy_plane_unit: Attribute.String & Attribute.Required;
-    angle_xz_plane: Attribute.Float &
-      Attribute.Required &
-      Attribute.DefaultTo<0>;
-    angle_xz_plane_unit: Attribute.String & Attribute.Required;
-    angle_yz_plane: Attribute.Float &
-      Attribute.Required &
-      Attribute.DefaultTo<0>;
-    angle_yz_plane_unit: Attribute.String & Attribute.Required;
-    static_ent_id: Attribute.UID & Attribute.Required;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::static-entity.static-entity',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::static-entity.static-entity',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
-export interface ApiVectorVector extends Schema.CollectionType {
-  collectionName: 'vectors';
-  info: {
-    singularName: 'vector';
-    pluralName: 'vectors';
-    displayName: 'Vector';
-    description: '';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    name: Attribute.String &
-      Attribute.Required &
-      Attribute.DefaultTo<'generic'>;
-    vector_id: Attribute.Relation<
-      'api::vector.vector',
-      'oneToOne',
-      'api::static-entity.static-entity'
-    >;
-    createdAt: Attribute.DateTime;
-    updatedAt: Attribute.DateTime;
-    createdBy: Attribute.Relation<
-      'api::vector.vector',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-    updatedBy: Attribute.Relation<
-      'api::vector.vector',
-      'oneToOne',
-      'admin::user'
-    > &
-      Attribute.Private;
-  };
-}
-
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -819,15 +802,14 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
+      'api::moment.moment': ApiMomentMoment;
+      'api::vector.vector': ApiVectorVector;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
-      'api::moment.moment': ApiMomentMoment;
-      'api::static-entity.static-entity': ApiStaticEntityStaticEntity;
-      'api::vector.vector': ApiVectorVector;
     }
   }
 }
