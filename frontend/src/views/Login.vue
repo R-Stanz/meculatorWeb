@@ -1,5 +1,5 @@
 <template>
-<body>
+<div id="background">
 
 	<main class="flex">
 		<div class="flex row" id="top">
@@ -9,9 +9,7 @@
 				:style="login_show_alert ? 
 					{ 
 						'pointer-events': 'none',
-					       	'background-color' : 'green',
-						'color' : 'green',
-						'border' : 'none',
+						'color': '#324A5F'
 					} : {}"
 			>
 				<i class="bi bi-caret-left"></i>
@@ -35,10 +33,10 @@
 			<section>
 
 				<div class="input_div">
-					<label>Username:</label>				
-					<vee-field type="text" name="username" class="input"
-						id="username" placeholder="Username" />			
-					<ErrorMessage class="required" name="username" />		
+					<label>Username/Email:</label>				
+					<vee-field type="text" name="identifier" class="input"
+						id="identifier" placeholder="Username or Email" />			
+					<ErrorMessage class="required" name="identifier" />		
 				</div>
 
 				<div class="input_div">
@@ -60,21 +58,18 @@
 		</vee-form>
 	</main>
 
-</body>
+</div>
 </template>
 
 <style scoped src="@/assets/css/login.css">
 </style>
 
 <script>
-import { ref, computed } from 'vue'
-import { isAxiosError } from 'axios'
-
 export default {
 	data() {
 		return {
 			schema: {
-				username: "required|min:3|max:40|alpha_dash",
+				identifier: "required|min:3|max:40|alpha_dash",
 				password: "required|min:6|max:50"
 			},
 
@@ -90,6 +85,7 @@ export default {
 			this.login_in_submission = true
 			this.login_alert_variant = "info"
 			this.login_alert_msg = "Loging in!!"
+			console.log(values)
 
 			this.login_alert_variant = "success"
 			this.login_alert_msg = "Success, logged in!"

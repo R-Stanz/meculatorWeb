@@ -1,8 +1,9 @@
-body {
+#background {
 	background-color: #0C1821;
 	margin: auto;
 	color: #FFFFFF;
 	display: inline;
+	min-height: 100vh;
 }
 
 nav {

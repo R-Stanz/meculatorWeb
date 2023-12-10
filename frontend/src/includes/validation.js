@@ -1,7 +1,7 @@
 import { 
-	Form as VeeForm, Field as VeeField, defineRule, ErrorMessage, configure, 
+	Form as VeeForm, Field as VeeField, defineRule, ErrorMessage, configure
 } from "vee-validate"
-import { required, min, max, alpha_dash as alphaDash } from '@vee-validate/rules'
+import { required, min, max, alpha_dash as alphaDash, email} from '@vee-validate/rules'
 
 export default {
 	install(app) {
@@ -13,6 +13,7 @@ export default {
 		defineRule('min', min)
 		defineRule('max', max)
 		defineRule('alpha_dash', alphaDash)
+		defineRule('email', email)
 
 		configure({
 			generateMessage: (ctx) => {
@@ -21,6 +22,7 @@ export default {
 					min: 		`The field ${ctx.field} is too short.`,
 					max:		`The field ${ctx.field} is too long.`,
 					alpha_dash: 	`The field ${ctx.field} has an invalid character.`,
+					email:		`The field ${ctx.field} must have an email.`,
 				}
 
 				const message = messages[ctx.rule.name]

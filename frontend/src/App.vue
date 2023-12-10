@@ -2,8 +2,17 @@
 	<router-view></router-view>
 </template>
 
-<script setup>
-	import { RouterLink, RouterView } from 'vue-router'
+<script>
+import { RouterLink, RouterView } from 'vue-router'
+import { useUserStore } from '@/stores/userStore'
+
+export default {
+	data() {
+		return {
+			userStore: useUserStore()
+		}
+	}
+}
 </script>
 
 <style>
@@ -13,11 +22,11 @@ html {
 	scroll-behavior: smooth;
 }
 
-body {
+#background {
 	position: absolute;
 	top: 0;
 	left: 0;
 	display: grid;
-	width: 100vw;
+	min-width: 100vw;
 }
 </style>

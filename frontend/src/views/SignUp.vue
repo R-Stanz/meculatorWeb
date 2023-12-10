@@ -1,17 +1,15 @@
 <template>
-<body>
+<div id="background">
 
 	<main class="flex">
 		<div class="flex row" id="top">
 			<router-link 
 				id="go_home" 
 				:to="{ name: 'home' }"
-				:style="login_show_alert ? 
+				:style="reg_in_submission ? 
 					{ 
 						'pointer-events': 'none',
-					       	'background-color' : 'green',
-						'color' : 'green',
-						'border' : 'none',
+						'color': '#0C1821'
 					} : {}"
 			>
 				<i class="bi bi-caret-left"></i>
@@ -42,6 +40,13 @@
 				</div>
 
 				<div class="input_div">
+					<label>E-mail:</label>				
+					<vee-field type="text" name="email" class="input"
+						id="email" placeholder="E-mail" />			
+					<ErrorMessage class="required" name="email" />		
+				</div>
+
+				<div class="input_div">
 					<label>Password:</label>				
 					<vee-field type="password" name="password" class="input"
 						id="password" placeholder="Password" />			
@@ -61,18 +66,20 @@
 		</vee-form>
 	</main>
 
-</body>
+</div>
 </template>
 
 <style scoped src="@/assets/css/sign_up.css">
 </style>
 
 <script>
+import axios from "axios"
 export default {
 	data() {
 		return {
 			schema: {
 				username: "required|min:3|max:40|alpha_dash",
+				email:	  "required|min:3|max:40|email",
 				password: "required|min:6|max:50|"
 			},
 
@@ -83,21 +90,38 @@ export default {
 		}
 	},
 	methods: {
-		register(values) {
+		async register(values) {
 			this.reg_show_alert 	= true
 			this.reg_in_submission 	= true
 			this.reg_alert_variant 	= "info"
 			this.reg_alert_msg 	= "Account being created!"
 
-			this.reg_alert_variant = "success"
-			this.reg_alert_msg = "Account created!"
+			try {
+				console.log(this.username, this.password, this.email)
+				await this.axios.post(`http://localhost:1337/api/auth/local/register`, {
+					username: values.username, 
+					password: values.password, 
+					email: values.email, 
+					role: 1
+				})
 
-			setTimeout(function () {
-					this.reg_in_submission	= false
-					this.reg_show_alert 		= false
-					this.reg_alert_variant 	= "info"
-					this.reg_alert_msg 		= "Account being created!"
-				}.bind(this), 2000)
+				this.reg_alert_variant 	= "success"
+				this.reg_alert_msg 	= "Account created!"
+
+				setTimeout(function () {
+							this.$router.push({ name: "login" }
+				)}.bind(this), 1000)
+			}
+
+			catch(error) {
+				console.log(error)
+				this.reg_in_submission 	= false
+				this.reg_alert_variant 	= "error"
+				this.reg_alert_msg 	= error.message
+				setTimeout(function () {
+							this.reg_show_alert 	= false
+				}.bind(this), 3500)
+			}
 
 		},
 	},

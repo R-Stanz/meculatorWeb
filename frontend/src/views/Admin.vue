@@ -1,5 +1,5 @@
 <template>
-<body>
+<div id="background">
 
 	 <AdminBar></AdminBar>
 
@@ -8,7 +8,7 @@
 		<DelAccounts></DelAccounts>
 	</main>
 
-</body>
+</div>
 </template>
 
 <style scoped src='@/assets/css/admin.css'>

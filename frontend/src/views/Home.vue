@@ -1,5 +1,5 @@
 <template>
-	<body>
+	<div id="background">
 
 		<nav>
 			<router-link class="login" :to="{ name: 'login' }">
@@ -35,7 +35,7 @@
 			<a id="git" href="https://github.com/R-Stanz/meculatorWeb/tree/main" target="_blank" rel="noopener noreferrer">This Project Repository<br /><i class="bi bi-github"></i></a>
 		</section>
 
-	</body>
+	</div>
 </template>
 
 <style scoped src="@/assets/css/home.css">
