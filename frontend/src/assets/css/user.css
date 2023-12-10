@@ -4,11 +4,16 @@
 	margin: auto;
 }
 
-nav {
-	display: none;
+ul {
+	height: 40vh;
+	overflow-y: scroll;
 }
 
-i.bi-arrow-bar-left {
+li {
+	font-size: 1.2em;
+}
+
+.bi-arrow-bar-left {
 	font-size: 2em;
 }
 
@@ -78,7 +83,7 @@ main {
 	}
 
 
-	ul#side_nav li button {
+	button.menu {
 		color: #000000;
 		text-decoration: none;
 		font-size: 0.7em;
@@ -90,13 +95,13 @@ main {
 		margin: 0;
 	}
 
-	ul#side_nav li button:hover {
+	button.menu:hover {
 		background-color: #324A5F;
 		border-color: #1B2A41;
 		border-right-color: #0C1821;
 	}
 
-	ul#side_nav li button:focus {
+	button.menu:focus {
 		background-color: #324A5F;
 		border-color: #1B2A41;
 		border-right-color: #0C1821;
