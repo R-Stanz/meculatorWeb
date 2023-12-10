@@ -3,6 +3,7 @@ import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import SignUp from '@/views/SignUp.vue'
 import Admin from '@/views/Admin.vue'
+import User from '@/views/User.vue'
 
 const routes = [
 	{
@@ -32,6 +33,11 @@ const routes = [
 		name: 'admin',
 		path: '/admin',
 		component: Admin,
+	},
+	{
+		name: 'user',
+		path: '/user',
+		component: User,
 	},
 	{
 		path: '/:catchAll(.*)*',

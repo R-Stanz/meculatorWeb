@@ -80,15 +80,52 @@ export default {
 		}
 	},
 	methods: {
-		login(values) {
+		async login(values) {
 			this.login_show_alert = true
 			this.login_in_submission = true
 			this.login_alert_variant = "info"
 			this.login_alert_msg = "Loging in!!"
 			console.log(values)
 
-			this.login_alert_variant = "success"
-			this.login_alert_msg = "Success, logged in!"
+			try {
+				const res = await this.axios.post(`http://localhost:1337/api/auth/local`, {
+					identifier: values.identifier,
+					password: values.password
+				})
+
+				const { jwt, user } = res.data
+				localStorage.setItem('jwt', jwt)
+				localStorage.setItem('userData', JSON.stringify(user))
+
+				const res2 = await this.axios.get(`http://localhost:1337/api/users/${user.id}?populate=*`, {
+					headers: {
+						Authorization: `Bearer ${jwt}`,
+					},
+				})
+				localStorage.setItem('role', JSON.stringify(res2.data.role.type))
+				console.log(res2)
+				console.log(res2.data.role.type)
+
+				this.login_alert_variant = "success"
+				this.login_alert_msg = "Success, logged in!"
+
+				if(res2.data.role.type == "admin") {
+					this.$router.push("admin")
+				}
+				else {
+					this.$router.push("user")
+				}
+			}
+
+			catch(error) {
+				console.log(error.message)
+				this.login_in_submission = false
+				this.login_alert_variant = "error"
+				this.login_alert_msg	 = error.message
+				setTimeout(function () {
+							this.login_show_alert	 = false
+				}.bind(this), 3500)
+			}
 		}
 	}
 }
