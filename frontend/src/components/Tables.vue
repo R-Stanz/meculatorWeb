@@ -8,43 +8,30 @@
 					{{ label }}
 				</td>
 			</tr>
+
+			<tr
+				v-for="vector in vectors"
+				v-show="show_vectors"
+			>
+				<td
+					v-for="(value, index) in vector.val"
+					v-bind:key="index"
+				>
+					{{ value[1] }}
+				</td>
+			</tr>
+
 			<!--
-			<tr>
-				<td>Car</td>
-				<td>3</td>
-				<td>kN</td>
-				<td>3</td>
-				<td>kN</td>
-				<td>0</td>
-				<td>N</td>
-				<td>0</td>
-				<td>N</td>
-				<td>90</td>
-				<td>deg</td>
-				<td>90</td>
-				<td>deg</td>
-				<td>0</td>
-				<td>Rad</td>
-			</tr>
-			<tr>
-				<td>Ball</td>
-				<td>33</td>
-				<td>kN</td>
-				<td>33</td>
-				<td>kN</td>
-				<td>0</td>
-				<td>N</td>
-				<td>0</td>
-				<td>N</td>
-				<td>90</td>
-				<td>deg</td>
-				<td>90</td>
-				<td>deg</td>
-				<td>0</td>
-				<td>Rad</td>
-			</tr>
-			<tr v-for="row in vet">
-				<td v-for="data in row">{{ data }}</td>
+			<tr
+				v-for="moment in moments"
+				v-show="!show_vectors"
+			>
+				<td
+					v-for="(value, index) in moment.val"
+					v-bind:key="index"
+				>
+					{{ value[1] }}
+				</td>
 			</tr>
 			-->
 		</table>
@@ -56,6 +43,8 @@
 
 <script>
 import { tableService } from '@/api/TableService'
+import { isAxiosError } from 'axios'
+import { vector_handler } from '@/includes/dataHandler'
 
 export default {
 	props: {
@@ -77,8 +66,10 @@ export default {
 					"Unit", "XZ Reference", "Unit", "YZ Reference", "Unit"],
 
 			schema: {
-				data: "required|min:1|max:30|alpha_dash",
+				data: "required|min:1|max:30|alpha_dash"
 			},
+			vectors: [],
+			unfit_att: ["createdAt", "publishedAt", "updatedAt"],
 
 			edit_in_submission:	false,
 			edit_show_alert:	false,
@@ -86,21 +77,40 @@ export default {
 			edit_alert_msg:		"Loding!",
 		}
 	},
-
 	methods: {
-
-		//async mounted() {
-		//	try {
-		//		const res = await api.get(`/vectors`, {
-		//			params: {
-		//				'pagination[page]': 1,
-		//				'pagination[pageSize]: 
-		//		}
-		//	}
-		//	catch(error){
-		//	}
 	},
+	async mounted() {
+		this.edit_in_submission = true
+		this.edit_show_alert =	true
 
+		let vectors_page = []
+		try {
+			vectors_page = await tableService.allVectors()
+			console.log(this.vectors.data[0])//.attributes.magnitude)
+
+			this.edit_alert_variant = "success"
+			this.edit_alert_msg = "Pages loaded!"
+
+			setTimeout(function () {
+						this.edit_in_submission =	false
+						this.edit_show_alert =		false
+						this.edit_alert_variant =	"info"
+						this.edit_alert_msg =		"Loding!"
+			}.bind(this), 3500)
+		}
+		catch(e){
+			this.edit_alert_variant = "error"
+
+			if(isAxiosError(e)) {
+				this.edit_alert_msg = e.response?.data.error.message
+			}
+			else if(e instanceof Error) {
+				this.edit_alert_msg = e.message
+			}
+		}
+		this.vectors = vector_handler(vectors_page)
+		console.log(this.vectors)
+	},
 	watch: {
 		show_vectors(val) {
 			if(val) {
@@ -110,10 +120,6 @@ export default {
 				this.labels = this.moments_labels
 			}
 		}
-	},
-
-	async mounted() {
-		console.log("MSG")
 	}
 }
 </script>

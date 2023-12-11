@@ -459,6 +459,7 @@ export interface ApiVectorVector extends Schema.CollectionType {
     vector_name: Attribute.String &
       Attribute.Required &
       Attribute.DefaultTo<'generic'>;
+    magnitude_i_unit: Attribute.String & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

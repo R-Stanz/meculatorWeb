@@ -80,6 +80,10 @@
       "type": "string",
       "required": true,
       "default": "generic"
+    },
+    "magnitude_i_unit": {
+      "type": "string",
+      "required": true
     }
   }
 }
