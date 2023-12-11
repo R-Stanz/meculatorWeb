@@ -65,6 +65,8 @@
 </style>
 
 <script>
+import { api } from "@/api"
+
 export default {
 	data() {
 		return {
@@ -88,7 +90,7 @@ export default {
 			console.log(values)
 
 			try {
-				const res = await this.axios.post(`http://localhost:1337/api/auth/local`, {
+				const res = await api.post(`/auth/local`, {
 					identifier: values.identifier,
 					password: values.password
 				})
@@ -97,7 +99,7 @@ export default {
 				localStorage.setItem('jwt', jwt)
 				localStorage.setItem('userData', JSON.stringify(user))
 
-				const res2 = await this.axios.get(`http://localhost:1337/api/users/${user.id}?populate=*`, {
+				const res2 = await api.get(`/users/${user.id}?populate=*`, {
 					headers: {
 						Authorization: `Bearer ${jwt}`,
 					},

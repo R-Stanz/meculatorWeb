@@ -4,12 +4,10 @@
 
 <script>
 import { RouterLink, RouterView } from 'vue-router'
-import { useUserStore } from '@/stores/userStore'
 
 export default {
 	data() {
 		return {
-			userStore: useUserStore()
 		}
 	}
 }

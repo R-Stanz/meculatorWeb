@@ -73,6 +73,8 @@
 </style>
 
 <script>
+import { api } from "@/api"
+
 export default {
 	data() {
 		return {
@@ -97,7 +99,7 @@ export default {
 
 			try {
 				console.log(this.username, this.password, this.email)
-				await this.axios.post(`http://localhost:1337/api/auth/local/register`, {
+				await api.post(`/auth/local/register`, {
 					username: values.username, 
 					password: values.password, 
 					email: values.email, 

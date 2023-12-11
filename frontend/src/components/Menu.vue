@@ -17,7 +17,7 @@
 		</li></button>
 
 		<button
-			v-if="show_vectors"
+			v-if="!show_vectors"
 			type="button"
 			@click="toggle_tables"
 			class="menu"
@@ -47,7 +47,6 @@ export default {
 	emits: ["toggle_tables"],
 	methods: {
 		toggle_tables() {
-			console.log("Clicked")
 			this.$emit("toggle_tables")
 		}
 	}
