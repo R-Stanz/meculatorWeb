@@ -13,6 +13,10 @@
 				v-for="vector in vectors"
 				v-show="show_vectors"
 			>
+				<td><input 
+					type="checkbox" 
+					@click="select_vector(vector.id)" 
+				/></td>
 				<td
 					v-for="(value, index) in vector.val"
 					v-bind:key="index"
@@ -26,6 +30,10 @@
 				v-for="moment in moments"
 				v-show="!show_vectors"
 			>
+				<input 
+					type="checkbox" 
+					v-model="moment_selected" 
+				/>
 				<td
 					v-for="(value, index) in moment.val"
 					v-bind:key="index"
@@ -53,15 +61,15 @@ export default {
 	data() {
 		return {
 			vectors_labels: [
-					"Name", "Magnitude", "Unit", "i", "Unit",
+					"Select", "Name", "Magnitude", "Unit", "i", "Unit",
 					"j", "Unit", "k", "Unit", "XY Reference", 
 					"Unit", "XZ Reference", "Unit", "YZ Reference", "Unit"],
 			moments_labels: [
-					"Name", "Magnitude", "Unit", "i", "Unit",
+					"Select", "Name", "Magnitude", "Unit", "i", "Unit",
 					"j", "Unit", "k", "Unit", "XY Reference", 
 					"Unit", "XZ Reference", "Unit", "YZ Reference", "Unit", "Is Torque"],
 			labels: [
-					"Name", "Magnitude", "Unit", "i", "Unit",
+					"Select", "Name", "Magnitude", "Unit", "i", "Unit",
 					"j", "Unit", "k", "Unit", "XY Reference", 
 					"Unit", "XZ Reference", "Unit", "YZ Reference", "Unit"],
 
@@ -75,9 +83,22 @@ export default {
 			edit_show_alert:	false,
 			edit_alert_variant:	"info",
 			edit_alert_msg:		"Loding!",
+
+			vectors_selected: [],
+			moments_selected: [],
 		}
 	},
 	methods: {
+		select_vector(id) {
+			console.log(this.vectors_selected)
+			const index = this.vectors_selected.indexOf(id);
+			if (index <= -1) {
+				this.vectors_selected.push(id)
+			}
+			else {
+				this.vectors_selected.splice(index, 1)
+			}
+		}
 	},
 	async mounted() {
 		this.edit_in_submission = true
