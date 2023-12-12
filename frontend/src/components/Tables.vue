@@ -15,7 +15,8 @@
 			>
 				<td><input 
 					type="checkbox" 
-					@click="select_vector(vector.id)" 
+					v-model="vector.check"
+					@click="$emit('select_vector', vector.id)" 
 				/></td>
 				<td
 					v-for="(value, index) in vector.val"
@@ -57,7 +58,12 @@ import { vector_handler } from '@/includes/dataHandler'
 export default {
 	props: {
 		show_vectors: Boolean,
+		vectors_selected: Array,
+		moments_selected: Array,
 	},
+	
+	emits: ["select_vector"],
+	
 	data() {
 		return {
 			vectors_labels: [
@@ -77,29 +83,23 @@ export default {
 				data: "required|min:1|max:30|alpha_dash"
 			},
 			vectors: [],
-			unfit_att: ["createdAt", "publishedAt", "updatedAt"],
-
+			
 			edit_in_submission:	false,
 			edit_show_alert:	false,
 			edit_alert_variant:	"info",
 			edit_alert_msg:		"Loding!",
+		}
+	},
 
-			vectors_selected: [],
-			moments_selected: [],
-		}
-	},
 	methods: {
-		select_vector(id) {
-			console.log(this.vectors_selected)
-			const index = this.vectors_selected.indexOf(id);
-			if (index <= -1) {
-				this.vectors_selected.push(id)
-			}
-			else {
-				this.vectors_selected.splice(index, 1)
-			}
+		select_vector(vector) {
+			this.$emit("select_vector(vector)")
 		}
 	},
+	
+	computed: {
+	},
+	
 	async mounted() {
 		this.edit_in_submission = true
 		this.edit_show_alert =	true
@@ -107,7 +107,6 @@ export default {
 		let vectors_page = []
 		try {
 			vectors_page = await tableService.allVectors()
-			console.log(this.vectors.data[0])//.attributes.magnitude)
 
 			this.edit_alert_variant = "success"
 			this.edit_alert_msg = "Pages loaded!"
@@ -130,17 +129,26 @@ export default {
 			}
 		}
 		this.vectors = vector_handler(vectors_page)
-		console.log(this.vectors)
 	},
+	
 	watch: {
 		show_vectors(val) {
 			if(val) {
 				this.labels = this.vectors_labels
+				/*
+				for (let i in this.moments) {
+					this.moments[i].check = false
+				}
+				*/
 			}
 			else {
 				this.labels = this.moments_labels
+
+				for (let i in this.vectors) {
+					this.vectors[i].check = false
+				}
 			}
-		}
+		},
 	}
 }
 </script>

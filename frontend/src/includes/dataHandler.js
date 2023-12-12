@@ -1,8 +1,6 @@
 export  function vector_handler(input) {
-	console.log("___")
-	console.log(input)
 
-	var vector = { "id": 0, "val": []}
+	var vector = { }
 	var vector1 = []
 	var output = []
 	for (let i in input.data) {
@@ -10,7 +8,7 @@ export  function vector_handler(input) {
 			if(n == "id") {
 				vector1 = []
 				vector.id = input.data[i][n]
-				console.log(vector)
+				vector.check = false
 			}
 			else {
 				for (var att in input.data[i][n]) {
@@ -42,6 +40,5 @@ export  function vector_handler(input) {
 			}
 		}
 	}
-	console.log(output)
 	return output
 }

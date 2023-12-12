@@ -6,7 +6,9 @@
 
 		<Menu 
 			:show_vectors="show_vectors" 
-			@toggle_tables="show_vectors = !show_vectors"
+			:vectors_selected="vectors_selected" 
+			:moments_selected="moments_selected" 
+			@toggle_tables="toggle_tables"
 		></Menu>
 
 		<footer id="aside_footer">
@@ -21,6 +23,9 @@
 
 	<Tables 
 		:show_vectors="show_vectors" 
+		:vectors_selected="vectors_selected" 
+		:moments_selected="moments_selected" 
+		@select_vector="select_vector"
 	></Tables>
 </div>
 </template>
@@ -39,8 +44,33 @@ export default {
 	},
 	data() {
 		return {
-			show_vectors: true
+			show_vectors: true,
+			vectors_selected: [],
+			moments_selected: [],
 		}
+	},
+	methods: {
+		toggle_tables() {
+			if(this.show_vectors) {
+				this.vectors_selected = []
+			}
+			else {
+				this.moments_selected = []
+			}
+			this.show_vectors = !this.show_vectors
+		},
+		select_vector(id) {
+			for (let i = 0; i < this.vectors_selected.length; i++) {
+				if(this.vectors_selected[i] == id) {
+					this.vectors_selected[i] 
+					this.vectors_selected.splice(i, 1)
+					return
+				}
+			}
+			this.vectors_selected.push(id)
+		}
+	},
+	watch: {
 	}
 }
 </script>

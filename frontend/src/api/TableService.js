@@ -12,7 +12,6 @@ class TableService {
 				'pagination[pageSize]': pageSize,
 			}
 		})
-		console.log(res)
 		return res.data
 	}
 }
