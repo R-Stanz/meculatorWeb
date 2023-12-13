@@ -99,7 +99,7 @@ export default {
 				this.login_alert_variant = "success"
 				this.login_alert_msg = "Success, logged in!"
 
-				if(res2.data.role.type == "admin") {
+				if(user.role == "admin") {
 					this.$router.push("admin")
 				}
 				else {
