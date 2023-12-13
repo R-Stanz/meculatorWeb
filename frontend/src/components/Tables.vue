@@ -1,5 +1,10 @@
 <template>
 	<main>
+		<div 
+			id="panel" 
+			v-if="edit_show_alert"
+		> {{ edit_alert_msg }}
+		</div>
 		<vee-form v-if="modifying" id="form" :validation-schema="schema" @submit="apply">
 			<div id="all_inputs_area">
 				<div 
@@ -21,7 +26,7 @@
 
 			<button
 				type="submit"
-				:disabled="change_in_submission"
+				:disabled="edit_in_submission"
 			> Apply Changes
 			</button>
 
@@ -116,13 +121,8 @@ export default {
 			edit_show_alert:	false,
 			edit_alert_variant:	"info",
 			edit_alert_msg:		"Loding!",
+
 			items: [{ message: 'Foo', data: 11 }, { message: 'Bar', data: "lol" }],
-
-			change_in_submission: 	false,
-			change_show_alert: 	false,
-			change_alert_variant: 	"info",
-			change_alert_msg:	"Account being created!",
-
 		}
 	},
 
@@ -131,24 +131,17 @@ export default {
 			let info = []
 			let stc_ent = []
 			if (this.show_vectors) {
-				for (let index in this.vectors) {
-					if(this.vectors_selected[0] == this.vectors[index].id) {
-						stc_ent = this.vectors[index].val.map((x) => x)
-					}
-				}
+				let vector = this.find_by_id(this.vectors_selected[0])
+				stc_ent = vector.val.map((x) => x)
 			}
 			else {
-				for (let index in this.moments) {
-					if(this.moments_selected[0] == this.moments[index].id) {
-						stc_ent = this.moments[index].val.map((x) => x)
-					}
-				}
+				let moment = this.find_by_id(this.moments_selected[0])
+				stc_ent = moment.val.map((x) => x)
 			}
-			info.push({name:stc_ent[0][0], val: stc_ent[0][1], type:"text"})
-			stc_ent = stc_ent.splice(1)
+
 			for (let i in stc_ent) {
 				let input_type = ""
-				if (i%2 == 0) {
+				if (i%2 != 0) {
 					input_type = "number"
 				}
 				else {
@@ -159,12 +152,66 @@ export default {
 			return info
 		},
 
-		async apply(values) {
-			change_in_submission = 	false
-			change_show_alert = 	false
-			change_alert_variant = 	"info"
-			change_alert_msg =	"Account being created!"
+		find_by_id(id) {
+			if(this.show_vectors) {
+				for (let index in this.vectors) {
+					if(id == this.vectors[index].id) {
+						return this.vectors[index]					
+					}
+				}
+			}
+			else {
+				for (let index in this.moments) {
+					if(id == this.moments[index].id) {
+						return this.moments[index]
+					}
+				}
+			}
 		},
+
+		async apply(values) {
+			this.edit_in_submission = 	true
+			this.edit_show_alert = 		true
+			this.edit_alert_variant = 	"info"
+			this.edit_alert_msg =		"Submiting!"
+
+			console.log(values)
+			try {
+				if (this.vectors_selected.length == 1) {
+					let id = this.vectors_selected[0]
+					let vector = this.find_by_id(id)
+
+					await tableService.updateVector(id, values)
+					vector = await tableService.getVector(id)
+
+					this.edit_alert_variant = "success"
+					this.edit_alert_msg = "Successfully Edited!"
+				}
+				else if (this.moments_selected.length == 1) {
+				}
+				else if (this.show_vectors) {
+				}
+				else if (!this.show_vectors) {
+				}
+			}
+			catch(e) {
+				this.error_msg(e)
+			}
+			finally {
+				this.edit_in_submission = false
+			}
+		},
+
+		error_msg(e) {
+			this.edit_alert_variant = "error"
+
+			if(isAxiosError(e)) {
+				this.edit_alert_msg = e.response?.data.error.message
+			}
+			else if(e instanceof Error) {
+				this.edit_alert_msg = e.message
+			}
+		}
 	},
 	
 	computed: {
@@ -180,11 +227,9 @@ export default {
 					console.log(i, name)
 					if (i%2 == 0) {
 						obj = { [name] : reference }
-						//new_schema = Object.assign(new_schema, { name : numb })
 					}
 					else {
 						obj = { [name] : numb }
-						//new_schema = Object(new_schema, { name : reference })
 					}
 					new_schema = Object.assign(new_schema, obj)
 				}
@@ -199,14 +244,13 @@ export default {
 					}
 				}
 			}
-			console.log(new_schema)
 			return new_schema
 		}
 	},
 	
 	async mounted() {
-		this.edit_in_submission = true
-		this.edit_show_alert =	true
+		this.edit_in_submission = 	true
+		this.edit_show_alert =		true
 
 		let vectors_page = []
 		try {
@@ -223,14 +267,7 @@ export default {
 			}.bind(this), 3500)
 		}
 		catch(e){
-			this.edit_alert_variant = "error"
-
-			if(isAxiosError(e)) {
-				this.edit_alert_msg = e.response?.data.error.message
-			}
-			else if(e instanceof Error) {
-				this.edit_alert_msg = e.message
-			}
+			this.error_msg(e)
 		}
 		this.vectors = vector_handler(vectors_page)
 	},

@@ -1,39 +1,53 @@
 import { api } from "@/api"
-//import { useUserStore } from "@/stores/userStore"
+import { useUserStore } from "@/stores/userStore"
 
 class AuthenticationService {
   constructor() {}
 
 	
-	async login(identifier, password): Promise<User> {
-		const { data } = await api.post('/auth/local', {
-			identifier,
-			password
+	async login(values) {
+		const { data } = await api.post(`/auth/local`, {
+			identifier: values.identifier,
+			password: values.password
 		})
+		console.log(data.jwt)
 
-		const user = { data.user, data.jwt }
+		const user = { ...data.user, jwt : data.jwt }
 		user.role = await this.getRole(user)
 
-		//const userStore = useUserStore()
-		//userStore.user = user
+		const userStore = useUserStore()
+		userStore.user = user
 
-		//localStorage.setItem('role', user.role)
-		//localStorage.setItem('username', user.username)
-		//return user
+		localStorage.setItem('role', user.role)
+		localStorage.setItem('identifier', user.identifier)
+		return user
 	}
 
-	//private async getRole(user) {
-	//	const { data } = await api.get('/users/me', {
-	//		headers: {
-	//			Authorization: `Bearer ${user.jwt}`
-	//		},
-	//		params: {
-	//			populate: 'role'
-	//		}
-	//	})
+	
+	async getRole(user) {
+		const { data } = await api.get('/users/me', {
+			headers: {
+				Authorization: `Bearer ${user.jwt}`
+			},
+			params: {
+				populate: 'role'
+			}
+		})
 
-	//	return data.role.type
-	//}
+		return data.role.type
+		/*
+		const res = await api.get(`/users/${user.id}?populate=*`, {
+			headers: {
+				Authorization: `Bearer ${jwt}`,
+			},
+		})
+		console.log(res)
+		localStorage.setItem('role', JSON.stringify(res.data.role.type))
+
+		return res.role.type
+		*/
+	}
 }
+
 
 export const authenticationService = new AuthenticationService()
