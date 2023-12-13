@@ -8,7 +8,10 @@
 			:show_vectors="show_vectors" 
 			:vectors_selected="vectors_selected" 
 			:moments_selected="moments_selected" 
+			:modifying="modifying"
+		    	@modify="modifying=true"
 			@toggle_tables="toggle_tables"
+		    	@vector_edition="modifying_vector = true"
 		></Menu>
 
 		<footer id="aside_footer">
@@ -25,6 +28,7 @@
 		:show_vectors="show_vectors" 
 		:vectors_selected="vectors_selected" 
 		:moments_selected="moments_selected" 
+		:modifying="modifying"
 		@select_vector="select_vector"
 	></Tables>
 </div>
@@ -47,6 +51,7 @@ export default {
 			show_vectors: true,
 			vectors_selected: [],
 			moments_selected: [],
+			modifying: false,
 		}
 	},
 	methods: {
@@ -56,9 +61,12 @@ export default {
 			}
 			else {
 				this.moments_selected = []
+				
 			}
+			this.modifying = false
 			this.show_vectors = !this.show_vectors
 		},
+		
 		select_vector(id) {
 			for (let i = 0; i < this.vectors_selected.length; i++) {
 				if(this.vectors_selected[i] == id) {
@@ -68,7 +76,7 @@ export default {
 				}
 			}
 			this.vectors_selected.push(id)
-		}
+		},
 	},
 	watch: {
 	}

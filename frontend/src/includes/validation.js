@@ -14,6 +14,7 @@ export default {
 		defineRule('max', max)
 		defineRule('alpha_dash', alphaDash)
 		defineRule('email', email)
+		//defineRule('double', double)
 
 		configure({
 			generateMessage: (ctx) => {
@@ -23,6 +24,7 @@ export default {
 					max:		`The field ${ctx.field} is too long.`,
 					alpha_dash: 	`The field ${ctx.field} has an invalid character.`,
 					email:		`The field ${ctx.field} must have an email.`,
+					double:		`The field ${ctx.field} must have a number.`,
 				}
 
 				const message = messages[ctx.rule.name]

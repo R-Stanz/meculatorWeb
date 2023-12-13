@@ -30,10 +30,27 @@ main {
 	}
 
 	main {
-		margin-left: 30vw;
-		margin-right: 4vw;
+		display: inline-grid;
+		margin-left: 25vw;
+		min-width: 100%;
 		background-color: #1B2A41;
-		width: 100%;
+	}
+
+	#form {
+		display: inline-grid;
+	}
+
+	.inputs_area {
+		display: inline-grid;
+	}
+
+	.input {
+		max-width: 6vw;
+	}
+
+	.required {
+		background-color: #FFFF;
+		color: #721c24;
 	}
 
 	table {

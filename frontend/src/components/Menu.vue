@@ -3,19 +3,19 @@
 		<button
 			v-if="single_vector_selected"
 			type="button"
-			@click="vector_edition"			
+			@click="$emit('modify')"			
 			class="menu"
 		><li>
-			Vector Edition
+			Edit Vector 
 		</li></button>
 
 		<button
 			v-if="single_moment_selected"
 			type="button"
-			@click="vector_edition"			
+			@click="$emit('modify')"			
 			class="menu"
 		><li>
-			Moment Edition
+			Edit Moment 
 		</li></button>
 
 		<button
@@ -64,7 +64,7 @@
 		</li></button>
 
 		<button
-			v-if="show_vectors"
+			v-if="show_vectors && !modifying"
 			type="button"
 			@click="new_vector"			
 			class="menu"
@@ -73,7 +73,7 @@
 		</li></button>
 		
 		<button
-			v-if="!show_vectors"
+			v-if="!show_vectors && !modifying"
 			type="button"
 			@click="moment_creation"
 			class="menu"
@@ -84,7 +84,7 @@
 		<button
 			v-if="!show_vectors"
 			type="button"
-			@click="toggle_tables"
+			@click="$emit('toggle_tables')"
 			class="menu"
 		><li>
 			Vectors Table
@@ -93,7 +93,7 @@
 		<button 
 			v-else
 			type="button"
-			@click="toggle_tables"
+			@click="$emit('toggle_tables')"
 			class="menu"
 		><li>
 			Momenta Table
@@ -110,25 +110,23 @@ export default {
 		show_vectors: Boolean,
 		vectors_selected: Array,
 		moments_selected: Array,
+		modifying: Boolean,
 	},
-	emits: ["toggle_tables"],
+	emits: ["toggle_tables", "modify"],
 	data() {
 		return {
 			single_vector_selected: false,
 			single_moment_selected: false,
-			pair_vector_selected: false,
+			pair_vector_selected: 	false,
 			couple_vectors_selected: false,
 			couple_moments_selected: false,
 		}
 	},
 	methods: {
-		toggle_tables() {
-			this.$emit("toggle_tables")
-		}
 	},
 	watch: {
 		vectors_selected: {
-			handler (val, older) {
+			handler (val) {
 				if (this.show_vectors && val.length == 1) {
 					this.single_vector_selected = true
 					this.pair_vector_selected = false
@@ -148,6 +146,24 @@ export default {
 					this.single_vector_selected = false
 					this.pair_vector_selected = false
 					this.couple_vectors_selected = false
+				}
+			},
+			deep: true
+		},
+
+		moments_selected: {
+			handler (val) {
+				if (!this.show_moments && val.length == 1) {
+					this.single_moment_selected = true
+					this.couple_moments_selected = false
+				}
+				else if (!this.show_moments && val.length > 0) {
+					this.single_moment_selected = false
+					this.couple_moments_selected = true
+				}
+				else {
+					this.single_moment_selected = false
+					this.couple_moments_selected = false
 				}
 			},
 			deep: true
