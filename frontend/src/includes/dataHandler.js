@@ -46,14 +46,10 @@ export function vector_page_handler(input) {
 export function vector_handler(input) {
 	let output = {}
 	let vector1 = []
-	console.log(input)
-	console.log("___")
-	console.log(input.data.id)
-	console.log(input.data.attributes)
 
 	output.id = input.data.id
 	output.check = false
-	for (var att in input.data.attributes) {
+	for (let att in input.data.attributes) {
 		console.log(att)
 		if(att != "createdAt" && att != "updatedAt" && att != "publishedAt") {
 			vector1.push([ att , input.data.attributes[att] ])
@@ -78,6 +74,17 @@ export function vector_handler(input) {
 	}
 
 	output.val = vector2
+	console.log(output)
+	return output
+}
+
+export function new_vector_handler(id, values) {
+	let vector = []
+	console.log(values)
+	for (let att in values) {
+		vector.push([att, values[att]])
+	}
+	let output = { 'id': id, val : vector, check : false }
 	console.log(output)
 	return output
 }

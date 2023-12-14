@@ -86,7 +86,7 @@
 <script>
 import { tableService } from '@/api/TableService'
 import { isAxiosError } from 'axios'
-import { vector_page_handler, vector_handler } from '@/includes/dataHandler'
+import { vector_page_handler, vector_handler, new_vector_handler } from '@/includes/dataHandler'
 
 export default {
 	props: {
@@ -129,12 +129,20 @@ export default {
 		input_info() {
 			let info = []
 			let stc_ent = []
-			if (this.show_vectors) {
+			if (this.show_vectors && this.vectors_selected.length == 1) {
 				let vector = this.find_by_id(this.vectors_selected[0])
 				stc_ent = vector.val.map((x) => x)
 			}
-			else {
+			else if (!this.show_vectors && this.moments_selected.length == 1) {
 				let moment = this.find_by_id(this.moments_selected[0])
+				stc_ent = moment.val.map((x) => x)
+			}
+			else if (this.show_vectors) {
+				let vector = this.vectors[0]
+				stc_ent = vector.val.map((x) => x)
+			}
+			else {
+				let moment = this.moments[0]
 				stc_ent = moment.val.map((x) => x)
 			}
 
@@ -175,7 +183,7 @@ export default {
 			this.edit_alert_msg =		"Submiting!"
 
 			try {
-				if (this.vectors_selected.length == 1) {
+				if (this.show_vectors && this.vectors_selected.length == 1) {
 					let id = this.vectors_selected[0]
 					let vector = this.find_by_id(id)
 
@@ -190,17 +198,23 @@ export default {
 						}
 					}
 
-					this.edit_alert_variant = "success"
-					this.edit_alert_msg = "Successfully Edited!"
-
-					this.$emit('done_modifying', id)
 				}
-				else if (this.moments_selected.length == 1) {
+				else if (!this.show_vectors && this.moments_selected.length == 1) {
 				}
 				else if (this.show_vectors) {
+					let res = await tableService.createVector(values)
+					let id = res.data.id
+					console.log(id)
+					let vector = new_vector_handler(id, values)
+					this.vectors.push(vector)
 				}
-				else if (!this.show_vectors) {
+				else {
 				}
+
+				this.edit_alert_variant = "success"
+				this.edit_alert_msg = "Successfully Edited!"
+
+				this.$emit('done_modifying', id)
 			}
 			catch(e) {
 				this.error_msg(e)
@@ -283,7 +297,7 @@ export default {
 	
 	watch: {
 		show_vectors(val) {
-			if(val) {
+			if (val) {
 				this.labels = this.vectors_labels
 				
 				for (let i in this.moments) {
@@ -301,7 +315,7 @@ export default {
 		},
 
 		modifying(val) {
-			if(val) {
+			if (val) {
 				this.labels = this.vectors_labels.slice(1)
 			}
 			else {

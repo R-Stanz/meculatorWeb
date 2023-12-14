@@ -34,6 +34,19 @@ class TableService {
 		return res.data
 	}
 
+	async createVector(values) {
+		const userStore = useUserStore()
+
+		let body = { data : { ...values } }
+
+		const res = await api.post(`/vectors`, body, {
+			headers : {
+				Authorization : `Bearer ${userStore.token}`
+			}
+		})
+		return res.data
+	}
+
 	getToken() {
 		const userStore = useUserStore()
 		return userStore.token

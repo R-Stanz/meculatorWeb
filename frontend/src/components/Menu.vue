@@ -66,7 +66,7 @@
 		<button
 			v-if="show_vectors && !modifying"
 			type="button"
-			@click="new_vector"			
+			@click="$emit('creation')"			
 			class="menu"
 		><li>
 			Vector Creation
@@ -75,7 +75,7 @@
 		<button
 			v-if="!show_vectors && !modifying"
 			type="button"
-			@click="moment_creation"
+			@click="$emit('creation')"
 			class="menu"
 		><li>
 			Moment Creation
@@ -111,8 +111,9 @@ export default {
 		vectors_selected: Array,
 		moments_selected: Array,
 		modifying: Boolean,
+		creating: Boolean,
 	},
-	emits: ["toggle_tables", "modify"],
+	emits: ["toggle_tables", "modify", "creation"],
 	data() {
 		return {
 			single_vector_selected: false,

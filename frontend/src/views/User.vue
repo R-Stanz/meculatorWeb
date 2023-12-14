@@ -9,6 +9,7 @@
 			:vectors_selected="vectors_selected" 
 			:moments_selected="moments_selected" 
 			:modifying="modifying"
+			@creation="creation"
 		    	@modify="modifying=true"
 			@toggle_tables="toggle_tables"
 		    	@vector_edition="modifying_vector = true"
@@ -29,8 +30,8 @@
 		:vectors_selected="vectors_selected" 
 		:moments_selected="moments_selected" 
 		:modifying="modifying"
-		@done_modifying="modifying=false; vectors_selected = []"
 		@select_vector="select_vector"
+		@done_modifying="modifying=false; vectors_selected = []"
 	></Tables>
 </div>
 </template>
@@ -55,6 +56,7 @@ export default {
 			modifying: false,
 		}
 	},
+
 	methods: {
 		toggle_tables() {
 			if(this.show_vectors) {
@@ -78,7 +80,14 @@ export default {
 			}
 			this.vectors_selected.push(id)
 		},
+
+		creation() {
+			this.modifying = true
+			this.vectors_selected = [] 
+			this.moments_selected = []
+		}
 	},
+
 	watch: {
 	}
 }
