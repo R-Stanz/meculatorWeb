@@ -18,12 +18,17 @@
 import AdminBar from '@/components/AdminBar.vue'
 import NewAdmin from '@/components/NewAdminArea.vue'
 import DelAccounts from '@/components/DeleteAccountsArea.vue'
+import { useUserStore } from '@/stores/userStore'
 
 export default {
 	components: {
 		AdminBar,
 		NewAdmin,
 		DelAccounts,
+	},
+	name: "Admin",
+	beforeRouteEnter(to, from, next) {
+		const store = useUserStore()
 	}
 }
 </script>

@@ -1,4 +1,4 @@
-export  function vector_handler(input) {
+export function vector_page_handler(input) {
 
 	var vector = { }
 	var vector1 = []
@@ -11,7 +11,7 @@ export  function vector_handler(input) {
 				vector.check = false
 			}
 			else {
-				for (var att in input.data[i][n]) {
+				for (let att in input.data[i][n]) {
 					if(att != "createdAt" && att != "updatedAt" && att != "publishedAt") {
 						vector1.push([ att , input.data[i][n][att] ])
 					}
@@ -24,8 +24,8 @@ export  function vector_handler(input) {
 				}
 				vector1[0] = swap
 
-				var vector2 = []
-				var count = 0
+				let vector2 = []
+				let count = 0
 				while(vector2.length < vector1.length) {
 					if(count == 4){
 						vector2.push(vector1[vector1.length-1])
@@ -36,9 +36,48 @@ export  function vector_handler(input) {
 
 				vector.val = vector2
 				output.push(vector)
-				var vector = { "id": 0, "val": []}
+				vector = { "id": 0, "val": []}
 			}
 		}
 	}
+	return output
+}
+
+export function vector_handler(input) {
+	let output = {}
+	let vector1 = []
+	console.log(input)
+	console.log("___")
+	console.log(input.data.id)
+	console.log(input.data.attributes)
+
+	output.id = input.data.id
+	output.check = false
+	for (var att in input.data.attributes) {
+		console.log(att)
+		if(att != "createdAt" && att != "updatedAt" && att != "publishedAt") {
+			vector1.push([ att , input.data.attributes[att] ])
+		}
+	}
+	let swap = vector1[13]
+	vector1[13] = vector1[14]
+	vector1[14] = swap
+	for(let j = vector1.length-1; j > 0; j--){
+		vector1[j] = vector1[j-1]
+	}
+	vector1[0] = swap
+
+	let vector2 = []
+	let count = 0
+	while(vector2.length < vector1.length) {
+		if(count == 4){
+			vector2.push(vector1[vector1.length-1])
+		}
+		vector2.push(vector1[count])
+		count++
+	}
+
+	output.val = vector2
+	console.log(output)
 	return output
 }

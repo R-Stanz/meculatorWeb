@@ -1,7 +1,7 @@
 <template>
 	<ul id="side_nav">
 		<button
-			v-if="single_vector_selected"
+			v-if="single_vector_selected && !modifying"
 			type="button"
 			@click="$emit('modify')"			
 			class="menu"
@@ -10,7 +10,7 @@
 		</li></button>
 
 		<button
-			v-if="single_moment_selected"
+			v-if="single_moment_selected && !modifying"
 			type="button"
 			@click="$emit('modify')"			
 			class="menu"

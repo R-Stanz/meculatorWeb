@@ -1,5 +1,5 @@
 import { api } from '@/api'
-//import { useUserStore } from '@/stores/userStore'
+import { useUserStore } from '@/stores/userStore'
 
 class TableService {
 
@@ -16,18 +16,27 @@ class TableService {
 	}
 
 	async getVector(id) {
-		const res = await api.get(`/vectors/${id}`, {})
+		let res = await api.get(`/vectors/${id}`, {})
+		console.log(res.data)
 		return res.data
 	}
 
 	async updateVector(id, values) {
 		const userStore = useUserStore()
-		const res = await api.put(`/vectors/${id}`, values, {
+		let body = { data : { ...values } }
+		console.log(userStore)
+		console.log(userStore.token)
+		const res = await api.put(`/vectors/${id}`, body, {
 			headers: {
 				Authorization : `Bearer ${userStore.token}`
 			}
 		})
 		return res.data
+	}
+
+	getToken() {
+		const userStore = useUserStore()
+		return userStore.token
 	}
 }
 

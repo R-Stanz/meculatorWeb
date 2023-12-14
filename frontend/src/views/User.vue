@@ -29,6 +29,7 @@
 		:vectors_selected="vectors_selected" 
 		:moments_selected="moments_selected" 
 		:modifying="modifying"
+		@done_modifying="modifying=false; vectors_selected = []"
 		@select_vector="select_vector"
 	></Tables>
 </div>

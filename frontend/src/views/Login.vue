@@ -90,7 +90,6 @@ export default {
 			this.login_in_submission = true
 			this.login_alert_variant = "info"
 			this.login_alert_msg = "Loging in!!"
-			console.log(values)
 
 			
 			try {
@@ -102,8 +101,11 @@ export default {
 				if(user.role == "admin") {
 					this.$router.push("admin")
 				}
-				else {
+				else if(user.role == "authenticated"){
 					this.$router.push("user")
+				}
+				else {
+					this.$router.push("login")
 				}
 			}
 

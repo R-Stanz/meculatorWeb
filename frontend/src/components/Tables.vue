@@ -31,7 +31,6 @@
 			</button>
 
 		</vee-form>
-		<p @click="input_info"> Message </p>
 
 		<table>
 			<tr>
@@ -87,7 +86,7 @@
 <script>
 import { tableService } from '@/api/TableService'
 import { isAxiosError } from 'axios'
-import { vector_handler } from '@/includes/dataHandler'
+import { vector_page_handler, vector_handler } from '@/includes/dataHandler'
 
 export default {
 	props: {
@@ -97,7 +96,7 @@ export default {
 		modifying: Boolean,
 	},      
 	
-	emits: ["select_vector"],
+	emits: ["select_vector", "done_modifying"],
 	
 	data() {
 		return {
@@ -175,17 +174,26 @@ export default {
 			this.edit_alert_variant = 	"info"
 			this.edit_alert_msg =		"Submiting!"
 
-			console.log(values)
 			try {
 				if (this.vectors_selected.length == 1) {
 					let id = this.vectors_selected[0]
 					let vector = this.find_by_id(id)
 
 					await tableService.updateVector(id, values)
-					vector = await tableService.getVector(id)
+					let vectors = this.vectors
+					let vec = await tableService.getVector(id)
+
+					for (let index in vectors) {
+						if(id == vectors[index].id) {
+							vectors[index] = vector_handler(vec)
+							break
+						}
+					}
 
 					this.edit_alert_variant = "success"
 					this.edit_alert_msg = "Successfully Edited!"
+
+					this.$emit('done_modifying', id)
 				}
 				else if (this.moments_selected.length == 1) {
 				}
@@ -224,7 +232,6 @@ export default {
 				for (let i in this.vectors[0].val) {
 					let name = this.vectors[0].val[i][0]
 					let obj = {}
-					console.log(i, name)
 					if (i%2 == 0) {
 						obj = { [name] : reference }
 					}
@@ -269,7 +276,9 @@ export default {
 		catch(e){
 			this.error_msg(e)
 		}
-		this.vectors = vector_handler(vectors_page)
+		this.vectors = vector_page_handler(vectors_page)
+		let tok = tableService.getToken()
+		console.log(tok)
 	},
 	
 	watch: {
