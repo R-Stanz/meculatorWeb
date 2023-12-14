@@ -45,9 +45,9 @@ Strapi.
 
 | Entidade| Criação | Leitura | Atualização | Remoção |
 | --- | --- | --- | --- | --- |
-| Entidade 1 | X |  X  |  | X |
-| Entidade 2 | X |    |  X | X |
-| Entidade 3 | X |    |  |  |
+| Users 1   | X |   | X |   |
+| Vectors 2 | X | X | X | X |
+| Moments 3 | X |   |   |   |
 
 > Lembre-se que é necessário implementar o CRUD de pelo menos duas entidades.
 
@@ -55,5 +55,5 @@ Strapi.
 
 | Método HTTP | URL |
 | --- | --- |
-| GET | api/entidade1/|
-| POST | api/entidade2 |
+| GET | api/vectors/|
+| POST | api/vectors/ |
