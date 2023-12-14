@@ -49,15 +49,17 @@ export function vector_handler(input) {
 
 	output.id = input.data.id
 	output.check = false
+
 	for (let att in input.data.attributes) {
-		console.log(att)
 		if(att != "createdAt" && att != "updatedAt" && att != "publishedAt") {
 			vector1.push([ att , input.data.attributes[att] ])
 		}
 	}
+
 	let swap = vector1[13]
 	vector1[13] = vector1[14]
 	vector1[14] = swap
+
 	for(let j = vector1.length-1; j > 0; j--){
 		vector1[j] = vector1[j-1]
 	}
@@ -74,17 +76,24 @@ export function vector_handler(input) {
 	}
 
 	output.val = vector2
+	console.log("hand")
 	console.log(output)
+
 	return output
 }
 
 export function new_vector_handler(id, values) {
 	let vector = []
 	console.log(values)
+
 	for (let att in values) {
 		vector.push([att, values[att]])
 	}
+
 	let output = { 'id': id, val : vector, check : false }
+
+	console.log("new")
 	console.log(output)
+
 	return output
 }

@@ -94,24 +94,25 @@ export default {
 		vectors_selected: Array,
 		moments_selected: Array,
 		modifying: Boolean,
+		deleting: Boolean,
 	},      
 	
-	emits: ["select_vector", "done_modifying"],
+	emits: ["select_vector", "done_modifying", "deleted"],
 	
 	data() {
 		return {
 			vectors_labels: [
 					"Select", "Name", "Magnitude", "Unit", "i", "Unit",
-					"j", "Unit", "k", "Unit", "XY Reference", 
-					"Unit", "XZ Reference", "Unit", "YZ Reference", "Unit"],
+					"j", "Unit", "k", "Unit", "xy Reference", 
+					"Unit", "xz Reference", "Unit", "yz Reference", "Unit"],
 			moments_labels: [
 					"Select", "Name", "Magnitude", "Unit", "i", "Unit",
-					"j", "Unit", "k", "Unit", "XY Reference", 
-					"Unit", "XZ Reference", "Unit", "YZ Reference", "Unit", "Is Torque"],
+					"j", "Unit", "k", "Unit", "xy Reference", 
+					"Unit", "xz Reference", "Unit", "yz Reference", "Unit", "Is Torque"],
 			labels: [
-					"Select", "Name", "Magnitude", "Unit", "i", "Unit",
-					"j", "Unit", "k", "Unit", "XY Reference", 
-					"Unit", "XZ Reference", "Unit", "YZ Reference", "Unit"],
+				"Select", "Name", "Magnitude", "Unit", "i", "Unit",
+					"j", "Unit", "k", "Unit", "xy Reference", 
+					"Unit", "xz Reference", "Unit", "yz Reference", "Unit"],
 
 			vectors: [],
 			moments: [],
@@ -176,6 +177,23 @@ export default {
 			}
 		},
 
+		find_index_by_id(id) {
+			if(this.show_vectors) {
+				for (let index in this.vectors) {
+					if(id == this.vectors[index].id) {
+						return { index : [index], val : this.vectors[index] }
+					}
+				}
+			}
+			else {
+				for (let index in this.moments) {
+					if(id == this.moments[index].id) {
+						return { index : [index], content : this.moments[index] }
+					}
+				}
+			}
+		},
+
 		async apply(values) {
 			this.edit_in_submission = 	true
 			this.edit_show_alert = 		true
@@ -183,37 +201,46 @@ export default {
 			this.edit_alert_msg =		"Submiting!"
 
 			try {
+				let id = 0
 				if (this.show_vectors && this.vectors_selected.length == 1) {
-					let id = this.vectors_selected[0]
-					let vector = this.find_by_id(id)
+					id = this.vectors_selected[0]
+					let info = this.find_index_by_id(id)
+					console.log(info)
+					let index = info.index
+					let vector = info.content
 
 					await tableService.updateVector(id, values)
 					let vectors = this.vectors
 					let vec = await tableService.getVector(id)
 
-					for (let index in vectors) {
-						if(id == vectors[index].id) {
-							vectors[index] = vector_handler(vec)
-							break
-						}
-					}
+					vectors[index] = vector_handler(vec)
 
 				}
 				else if (!this.show_vectors && this.moments_selected.length == 1) {
+					id = this.moments_selected[0]
+					let info = this.find_index_by_id(id)
+					let index = info.index
+					let moment = info.content
+
+					await tableService.updateVector(id, values)
+					let moments = this.moments
+					let vec = await tableService.getVector(id)
+
+					moments[index] = moment_handler(vec)
 				}
 				else if (this.show_vectors) {
 					let res = await tableService.createVector(values)
-					let id = res.data.id
-					console.log(id)
+					id = res.data.id
 					let vector = new_vector_handler(id, values)
 					this.vectors.push(vector)
 				}
-				else {
-				}
+				//else {
+				//}
 
 				this.edit_alert_variant = "success"
 				this.edit_alert_msg = "Successfully Edited!"
 
+				console.log("end")
 				this.$emit('done_modifying', id)
 			}
 			catch(e) {
@@ -232,6 +259,43 @@ export default {
 			}
 			else if(e instanceof Error) {
 				this.edit_alert_msg = e.message
+			}
+		},
+
+		async delete() {
+
+			this.edit_in_submission = 	true
+			this.edit_show_alert = 		true
+			this.edit_alert_variant = 	"info"
+			this.edit_alert_msg =		"Submiting!"
+
+			try {
+				if (this.show_vectors) {
+					let deleted_list = []
+					let count = 0
+					while (count < this.vectors_selected.length) {
+						let id = this.vectors_selected[count]
+						let res = await tableService.delVector(id)
+
+						for (let i in this.vectors) {
+							if (this.vectors[i].id == id) {
+								this.vectors.splice(i, 1)
+							}
+						}
+
+						deleted_list.push(res.data.id)
+						count++
+					}
+					console.log(deleted_list)
+					this.$emit("deleted")
+				}
+				else {}
+			}
+			catch(e) {
+				this.error_msg(e)
+			}
+			finally {
+				this.edit_in_submission = false
 			}
 		}
 	},
@@ -319,9 +383,15 @@ export default {
 				this.labels = this.vectors_labels.slice(1)
 			}
 			else {
-				this.labels = this.vectors_labels
+				this.labels = this.moments_labels.slice(1)
 			}
 		},
+
+		deleting(val) {
+			if (val) {
+				this.delete()
+			}
+		}
 	}
 }
 </script>

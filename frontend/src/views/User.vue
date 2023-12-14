@@ -13,6 +13,7 @@
 		    	@modify="modifying=true"
 			@toggle_tables="toggle_tables"
 		    	@vector_edition="modifying_vector = true"
+		    	@delete="deleting=true"
 		></Menu>
 
 		<footer id="aside_footer">
@@ -30,8 +31,10 @@
 		:vectors_selected="vectors_selected" 
 		:moments_selected="moments_selected" 
 		:modifying="modifying"
+		:deleting="deleting"
 		@select_vector="select_vector"
 		@done_modifying="modifying=false; vectors_selected = []"
+		@deleted="deleting=!deleting"
 	></Tables>
 </div>
 </template>
@@ -54,6 +57,7 @@ export default {
 			vectors_selected: [],
 			moments_selected: [],
 			modifying: false,
+			deleting: false,
 		}
 	},
 

@@ -48,7 +48,7 @@
 		<button
 			v-if="single_vector_selected || couple_vectors_selected"
 			type="button"
-			@click="delete_vector"			
+			@click="$emit('delete')"			
 			class="menu"
 		><li>
 			Delete Vector
@@ -57,7 +57,7 @@
 		<button
 			v-if="single_moment_selected || couple_moments_selected"
 			type="button"
-			@click="delete_moment"			
+			@click="$emit('delete')"			
 			class="menu"
 		><li>
 			Delete Moment
@@ -113,7 +113,7 @@ export default {
 		modifying: Boolean,
 		creating: Boolean,
 	},
-	emits: ["toggle_tables", "modify", "creation"],
+	emits: ["toggle_tables", "modify", "creation", "delete"],
 	data() {
 		return {
 			single_vector_selected: false,

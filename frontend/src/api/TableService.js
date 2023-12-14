@@ -47,6 +47,18 @@ class TableService {
 		return res.data
 	}
 
+	async delVector(id) {
+		const userStore = useUserStore()
+
+		const res = await api.delete(`/vectors/${id}`, {
+			headers : {
+				Authorization : `Bearer ${userStore.token}`
+			}
+		})
+
+		return res.data
+	}
+
 	getToken() {
 		const userStore = useUserStore()
 		return userStore.token
