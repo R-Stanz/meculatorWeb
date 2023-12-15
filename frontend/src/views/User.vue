@@ -6,13 +6,12 @@
 
 		<Menu 
 			:show_vectors="show_vectors" 
-			:vectors_selected="vectors_selected" 
-			:moments_selected="moments_selected" 
+			:selected_list="selected_list" 
 			:modifying="modifying"
 			@creation="creation"
 		    	@modify="modifying=true"
 			@toggle_tables="toggle_tables"
-		    	@vector_edition="modifying_vector = true"
+		    	@edit="modifying=true"
 		    	@delete="deleting=true"
 		></Menu>
 
@@ -28,11 +27,10 @@
 
 	<Tables 
 		:show_vectors="show_vectors" 
-		:vectors_selected="vectors_selected" 
-		:moments_selected="moments_selected" 
+		:selected_list="selected_list" 
 		:modifying="modifying"
 		:deleting="deleting"
-		@select_vector="select_vector"
+		@select="select"
 		@done_modifying="modifying=false; vectors_selected = []"
 		@deleted="deleting=!deleting"
 	></Tables>
@@ -54,8 +52,7 @@ export default {
 	data() {
 		return {
 			show_vectors: true,
-			vectors_selected: [],
-			moments_selected: [],
+			selected_list: [],
 			modifying: false,
 			deleting: false,
 		}
@@ -63,32 +60,26 @@ export default {
 
 	methods: {
 		toggle_tables() {
-			if(this.show_vectors) {
-				this.vectors_selected = []
-			}
-			else {
-				this.moments_selected = []
-				
-			}
+			this.selected_list = []
+
 			this.modifying = false
 			this.show_vectors = !this.show_vectors
 		},
 		
-		select_vector(id) {
-			for (let i = 0; i < this.vectors_selected.length; i++) {
-				if(this.vectors_selected[i] == id) {
-					this.vectors_selected[i] 
-					this.vectors_selected.splice(i, 1)
+		select(id) {
+			for (let i = 0; i < this.selected_list.length; i++) {
+				if(this.selected_list[i] == id) {
+					this.selected_list[i] 
+					this.selected_list.splice(i, 1)
 					return
 				}
 			}
-			this.vectors_selected.push(id)
+			this.selected_list.push(id)
 		},
 
 		creation() {
 			this.modifying = true
-			this.vectors_selected = [] 
-			this.moments_selected = []
+			this.selected_list = [] 
 		}
 	},
 

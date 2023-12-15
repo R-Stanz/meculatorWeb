@@ -15,6 +15,16 @@ class TableService {
 		return res.data
 	}
 
+	async allMoments(page=1, pageSize=24) {
+		const res = await api.get(`/moments`, {
+			params: {
+				'pagination[page]': page,
+				'pagination[pageSize]': pageSize,
+			}
+		})
+		return res.data
+	}
+
 	async getVector(id) {
 		let res = await api.get(`/vectors/${id}`, {})
 		console.log(res.data)

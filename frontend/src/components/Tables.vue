@@ -49,7 +49,7 @@
 				<input 
 					type="checkbox" 
 					v-model="vector.check"
-					@click="$emit('select_vector', vector.id)" 
+					@click="$emit('select', vector.id)" 
 				/></td>
 				<td
 					v-for="(value, index) in vector.val"
@@ -59,15 +59,16 @@
 				</td>
 			</tr>
 
-			<!--
 			<tr
 				v-for="moment in moments"
 				v-show="!show_vectors"
 			>
+				<td v-if="!modifying">
 				<input 
 					type="checkbox" 
-					v-model="moment_selected" 
-				/>
+					v-model="moment.check"
+					@click="$emit('select', moment.id)" 
+				/></td>
 				<td
 					v-for="(value, index) in moment.val"
 					v-bind:key="index"
@@ -75,7 +76,7 @@
 					{{ value[1] }}
 				</td>
 			</tr>
-			-->
+
 		</table>
 	</main>
 </template>
@@ -86,18 +87,17 @@
 <script>
 import { tableService } from '@/api/TableService'
 import { isAxiosError } from 'axios'
-import { vector_page_handler, vector_handler, new_vector_handler } from '@/includes/dataHandler'
+import { vector_page_handler, moment_page_handler, vector_handler, new_vector_handler } from '@/includes/dataHandler'
 
 export default {
 	props: {
 		show_vectors: Boolean,
-		vectors_selected: Array,
-		moments_selected: Array,
+		selected_list: Array,
 		modifying: Boolean,
 		deleting: Boolean,
 	},      
 	
-	emits: ["select_vector", "done_modifying", "deleted"],
+	emits: ["selected_list", "done_modifying", "deleted", "select"],
 	
 	data() {
 		return {
@@ -121,8 +121,6 @@ export default {
 			edit_show_alert:	false,
 			edit_alert_variant:	"info",
 			edit_alert_msg:		"Loding!",
-
-			items: [{ message: 'Foo', data: 11 }, { message: 'Bar', data: "lol" }],
 		}
 	},
 
@@ -130,12 +128,12 @@ export default {
 		input_info() {
 			let info = []
 			let stc_ent = []
-			if (this.show_vectors && this.vectors_selected.length == 1) {
-				let vector = this.find_by_id(this.vectors_selected[0])
+			if (this.show_vectors && this.selected_list.length == 1) {
+				let vector = this.find_by_id(this.selected_list[0])
 				stc_ent = vector.val.map((x) => x)
 			}
-			else if (!this.show_vectors && this.moments_selected.length == 1) {
-				let moment = this.find_by_id(this.moments_selected[0])
+			else if (!this.show_vectors && this.selected_list.length == 1) {
+				let moment = this.find_by_id(this.selected_list[0])
 				stc_ent = moment.val.map((x) => x)
 			}
 			else if (this.show_vectors) {
@@ -202,8 +200,8 @@ export default {
 
 			try {
 				let id = 0
-				if (this.show_vectors && this.vectors_selected.length == 1) {
-					id = this.vectors_selected[0]
+				if (this.show_vectors && this.selected_list.length == 1) {
+					id = this.selected_list[0]
 					let info = this.find_index_by_id(id)
 					console.log(info)
 					let index = info.index
@@ -216,8 +214,8 @@ export default {
 					vectors[index] = vector_handler(vec)
 
 				}
-				else if (!this.show_vectors && this.moments_selected.length == 1) {
-					id = this.moments_selected[0]
+				else if (!this.show_vectors && this.selected_list.length == 1) {
+					id = this.selected_list[0]
 					let info = this.find_index_by_id(id)
 					let index = info.index
 					let moment = info.content
@@ -234,8 +232,12 @@ export default {
 					let vector = new_vector_handler(id, values)
 					this.vectors.push(vector)
 				}
-				//else {
-				//}
+				else {
+					let res = await tableService.createVector(values)
+					id = res.data.id
+					let moment = new_moment_handler(id, values)
+					this.moments.push(moment)
+				}
 
 				this.edit_alert_variant = "success"
 				this.edit_alert_msg = "Successfully Edited!"
@@ -270,11 +272,11 @@ export default {
 			this.edit_alert_msg =		"Submiting!"
 
 			try {
+				let deleted_list = []
+				let count = 0
 				if (this.show_vectors) {
-					let deleted_list = []
-					let count = 0
-					while (count < this.vectors_selected.length) {
-						let id = this.vectors_selected[count]
+					while (count < this.selected_list.length) {
+						let id = this.selected_list[count]
 						let res = await tableService.delVector(id)
 
 						for (let i in this.vectors) {
@@ -286,10 +288,24 @@ export default {
 						deleted_list.push(res.data.id)
 						count++
 					}
+				}
+				else {
+					while (count < this.selected_list.length) {
+						let id = this.selected_list[count]
+						let res = await tableService.delVector(id)
+
+						for (let i in this.moments) {
+							if (this.moments[i].id == id) {
+								this.moments.splice(i, 1)
+							}
+						}
+
+						deleted_list.push(res.data.id)
+						count++
+					}
+				}
 					console.log(deleted_list)
 					this.$emit("deleted")
-				}
-				else {}
 			}
 			catch(e) {
 				this.error_msg(e)
@@ -321,12 +337,15 @@ export default {
 			}
 			else {
 				for (let i in this.moments[0].val) {
-					if (i%2 == 1) {
-						new_schema = push(new_schema, this.moments[0].val[i][0])
+					let name = this.moments[0].val[i][0]
+					let obj = {}
+					if (i%2 == 0) {
+						obj = { [name] : reference }
 					}
 					else {
-						new_schema = push(new_schema, this.moments[0].val[i][0])
+						obj = { [name] : numb }
 					}
+					new_schema = Object.assign(new_schema, obj)
 				}
 			}
 			return new_schema
@@ -338,8 +357,10 @@ export default {
 		this.edit_show_alert =		true
 
 		let vectors_page = []
+		let moments_page = []
 		try {
 			vectors_page = await tableService.allVectors()
+			moments_page = await tableService.allMoments()
 
 			this.edit_alert_variant = "success"
 			this.edit_alert_msg = "Pages loaded!"
@@ -351,10 +372,14 @@ export default {
 						this.edit_alert_msg =		"Loding!"
 			}.bind(this), 3500)
 		}
+
 		catch(e){
 			this.error_msg(e)
 		}
+
 		this.vectors = vector_page_handler(vectors_page)
+		this.moments = moment_page_handler(moments_page)
+
 		let tok = tableService.getToken()
 		console.log(tok)
 	},

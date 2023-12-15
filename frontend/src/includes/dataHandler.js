@@ -15,7 +15,7 @@ export function vector_page_handler(input) {
 					if(att != "createdAt" && att != "updatedAt" && att != "publishedAt") {
 						vector1.push([ att , input.data[i][n][att] ])
 					}
-				}
+				}		
 				let swap = vector1[13]
 				vector1[13] = vector1[14]
 				vector1[14] = swap
@@ -39,6 +39,34 @@ export function vector_page_handler(input) {
 				vector = { "id": 0, "val": []}
 			}
 		}
+	}
+	return output
+}
+
+export function moment_page_handler(input) {
+	let output = []
+	for (let index in input.data) {
+		let moment = []
+		for (let att in input.data[index].attributes) {
+			if(att != "createdAt" && att != "updatedAt" && att != "publishedAt") {
+				moment.push([ att , input.data[index].attributes[att] ])
+			}
+		}
+
+		let name = moment[moment.length - 2]
+		let k_unit = moment[moment.length - 1]
+
+		for (let i = moment.length - 1; i >= 0; i--) {
+			if (i == 8) {
+				moment[i] = k_unit
+			}
+			else {
+				moment[i] = moment[i-1]
+			}
+		}
+		moment[0] = name
+
+		output.push({ id : input.data[index].id, check : false, val : moment })
 	}
 	return output
 }

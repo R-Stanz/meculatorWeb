@@ -371,7 +371,7 @@ export interface ApiMomentMoment extends Schema.CollectionType {
     description: '';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
     magnitude: Attribute.Float & Attribute.Required & Attribute.DefaultTo<0>;
@@ -402,9 +402,9 @@ export interface ApiMomentMoment extends Schema.CollectionType {
     moment_name: Attribute.String &
       Attribute.Required &
       Attribute.DefaultTo<'generic'>;
+    magnitude_k_unit: Attribute.String & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
-    publishedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
       'api::moment.moment',
       'oneToOne',
