@@ -27,16 +27,29 @@ class TableService {
 
 	async getVector(id) {
 		let res = await api.get(`/vectors/${id}`, {})
-		console.log(res.data)
+		return res.data
+	}
+
+	async getMoment(id) {
+		let res = await api.get(`/moments/${id}`, {})
 		return res.data
 	}
 
 	async updateVector(id, values) {
 		const userStore = useUserStore()
 		let body = { data : { ...values } }
-		console.log(userStore)
-		console.log(userStore.token)
 		const res = await api.put(`/vectors/${id}`, body, {
+			headers: {
+				Authorization : `Bearer ${userStore.token}`
+			}
+		})
+		return res.data
+	}
+
+	async updateMoment(id, values) {
+		const userStore = useUserStore()
+		let body = { data : { ...values } }
+		const res = await api.put(`/moments/${id}`, body, {
 			headers: {
 				Authorization : `Bearer ${userStore.token}`
 			}
@@ -57,10 +70,35 @@ class TableService {
 		return res.data
 	}
 
+	async createMoment(values) {
+		const userStore = useUserStore()
+
+		let body = { data : { ...values } }
+
+		const res = await api.post(`/moments`, body, {
+			headers : {
+				Authorization : `Bearer ${userStore.token}`
+			}
+		})
+		return res.data
+	}
+
 	async delVector(id) {
 		const userStore = useUserStore()
 
 		const res = await api.delete(`/vectors/${id}`, {
+			headers : {
+				Authorization : `Bearer ${userStore.token}`
+			}
+		})
+
+		return res.data
+	}
+
+	async delMoment(id) {
+		const userStore = useUserStore()
+
+		const res = await api.delete(`/moments/${id}`, {
 			headers : {
 				Authorization : `Bearer ${userStore.token}`
 			}

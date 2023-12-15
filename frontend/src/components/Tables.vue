@@ -9,18 +9,35 @@
 			<div id="all_inputs_area">
 				<div 
 					class="inputs_area"
-					v-for="info in input_info()" 
-					:key="info.name"
+					v-for="(data, name, index) in input_info()" 
+					:key="index"
 				>
 						<vee-field 
-							:name="info.name"
-							:placeholder="info.val"
-							:id="info.name"
-							:type="info.type"
+							:name="name"
+							:placeholder="data.label"
+							:id="name"
+							:type="data.type"
 							class="input"
 						>
 						</vee-field>
-					<ErrorMessage class="required" :name="info.name" />
+					<ErrorMessage class="required" :name="name" />
+				</div>
+
+				<div 
+					class="inputs_area"
+					v-if="!show_vectors"
+				>
+						<vee-field 
+							name="is_torque"
+							placeholder="Is Torque?"
+							id="is_torque"
+							as="select"
+							class="input"
+						>
+							<option value="false">False</option>
+							<option value="true">True</option>
+						</vee-field>
+					<ErrorMessage class="required" name="is_torque" />
 				</div>
 			</div>
 
@@ -42,7 +59,7 @@
 			</tr>
 
 			<tr
-				v-for="vector in vectors"
+				v-for="(vector, index) in vectors.data"
 				v-show="show_vectors"
 			>
 				<td v-if="!modifying">
@@ -52,15 +69,15 @@
 					@click="$emit('select', vector.id)" 
 				/></td>
 				<td
-					v-for="(value, index) in vector.val"
+					v-for="(att, index) in vectors_attributes"
 					v-bind:key="index"
 				>
-					{{ value[1] }}
+					{{ vector.attributes[att] }}
 				</td>
 			</tr>
 
 			<tr
-				v-for="moment in moments"
+				v-for="(moment, index) in moments.data"
 				v-show="!show_vectors"
 			>
 				<td v-if="!modifying">
@@ -70,10 +87,10 @@
 					@click="$emit('select', moment.id)" 
 				/></td>
 				<td
-					v-for="(value, index) in moment.val"
+					v-for="(att, index) in moments_attributes"
 					v-bind:key="index"
 				>
-					{{ value[1] }}
+					{{ moment.attributes[att] }}
 				</td>
 			</tr>
 
@@ -87,7 +104,6 @@
 <script>
 import { tableService } from '@/api/TableService'
 import { isAxiosError } from 'axios'
-import { vector_page_handler, moment_page_handler, vector_handler, new_vector_handler } from '@/includes/dataHandler'
 
 export default {
 	props: {
@@ -101,21 +117,29 @@ export default {
 	
 	data() {
 		return {
-			vectors_labels: [
-					"Select", "Name", "Magnitude", "Unit", "i", "Unit",
-					"j", "Unit", "k", "Unit", "xy Reference", 
-					"Unit", "xz Reference", "Unit", "yz Reference", "Unit"],
-			moments_labels: [
-					"Select", "Name", "Magnitude", "Unit", "i", "Unit",
-					"j", "Unit", "k", "Unit", "xy Reference", 
-					"Unit", "xz Reference", "Unit", "yz Reference", "Unit", "Is Torque"],
-			labels: [
-				"Select", "Name", "Magnitude", "Unit", "i", "Unit",
+			vectors_labels: ["Select", "Name", "Magnitude", "Unit", "i", "Unit",
 					"j", "Unit", "k", "Unit", "xy Reference", 
 					"Unit", "xz Reference", "Unit", "yz Reference", "Unit"],
 
-			vectors: [],
-			moments: [],
+			moments_labels: ["Select", "Name", "Magnitude", "Unit", "i", "Unit",
+					"j", "Unit", "k", "Unit", "xy Reference", 
+					"Unit", "xz Reference", "Unit", "yz Reference", "Unit", "Is Torque"],
+
+			labels: ["Select", "Name", "Magnitude", "Unit", "i", "Unit",
+				"j", "Unit", "k", "Unit", "xy Reference", 
+				"Unit", "xz Reference", "Unit", "yz Reference", "Unit"],
+
+			vectors_attributes: [ "vector_name", "magnitude", "magnitude_unit", "magnitude_i", "magnitude_i_unit",
+						"magnitude_j", "magnitude_j_unit", "magnitude_k", "magnitude_k_unit",
+						"angle_xy_plane", "angle_xy_plane_unit", "angle_xz_plane", "angle_xz_plane_unit",
+		       				"angle_yz_plane", "angle_yz_plane_unit"	],
+
+			moments_attributes: [ "moment_name", "magnitude", "magnitude_unit", "magnitude_i", "magnitude_i_unit",
+						"magnitude_j", "magnitude_j_unit", "magnitude_k", "magnitude_k_unit",
+						"angle_xy_plane", "angle_xy_plane_unit", "angle_xz_plane", "angle_xz_plane_unit",
+		       				"angle_yz_plane", "angle_yz_plane_unit", "is_torque"],
+			vectors: {},
+			moments: {},
 			
 			edit_in_submission:	false,
 			edit_show_alert:	false,
@@ -126,50 +150,57 @@ export default {
 
 	methods: {
 		input_info() {
-			let info = []
-			let stc_ent = []
-			if (this.show_vectors && this.selected_list.length == 1) {
-				let vector = this.find_by_id(this.selected_list[0])
-				stc_ent = vector.val.map((x) => x)
+
+			let info = {}
+			let data = []
+			if (this.show_vectors) {
+				data = this.vectors_attributes
 			}
-			else if (!this.show_vectors && this.selected_list.length == 1) {
+			else {
+				data = this.moments_attributes
+			}
+
+			for (let i in data){
+				let index = data.length -1 -i
+				if (!this.show_vectors && (i == 0)) {}
+				else if ((index%2) != 0) {
+					info = Object.assign({ [data[index]] : 
+							{ type : "number", label : this.labels.at(index) }}, info)
+				}
+				else {
+					info = Object.assign({ [data[index]] : 
+							{ type : "text", label : this.labels.at(index) }}, info)
+				}
+			}
+			return info
+		},
+
+		torque_info() {
+			let stc_ent = []
+			if (this.selected_list.length == 1) {
 				let moment = this.find_by_id(this.selected_list[0])
 				stc_ent = moment.val.map((x) => x)
-			}
-			else if (this.show_vectors) {
-				let vector = this.vectors[0]
-				stc_ent = vector.val.map((x) => x)
 			}
 			else {
 				let moment = this.moments[0]
 				stc_ent = moment.val.map((x) => x)
 			}
 
-			for (let i in stc_ent) {
-				let input_type = ""
-				if (i%2 != 0) {
-					input_type = "number"
-				}
-				else {
-					input_type = "text"
-				}
-				info.push({name:stc_ent[i][0], val:stc_ent[i][1], type:input_type})
-			}
-			return info
+			return { name : stc_ent[0], val : stc_ent[1] }
 		},
 
 		find_by_id(id) {
 			if(this.show_vectors) {
-				for (let index in this.vectors) {
-					if(id == this.vectors[index].id) {
-						return this.vectors[index]					
+				for (let index in this.vectors.data) {
+					if(id == this.vectors.data[index].id) {
+						return this.vectors.data[index]					
 					}
 				}
 			}
 			else {
-				for (let index in this.moments) {
-					if(id == this.moments[index].id) {
-						return this.moments[index]
+				for (let index in this.moments.data) {
+					if(id == this.moments.data[index].id) {
+						return this.moments.data[index]
 					}
 				}
 			}
@@ -177,16 +208,16 @@ export default {
 
 		find_index_by_id(id) {
 			if(this.show_vectors) {
-				for (let index in this.vectors) {
-					if(id == this.vectors[index].id) {
-						return { index : [index], val : this.vectors[index] }
+				for (let index in this.vectors.data) {
+					if(id == this.vectors.data[index].id) {
+						return { index : [index], val : this.vectors.data[index] }
 					}
 				}
 			}
 			else {
 				for (let index in this.moments) {
-					if(id == this.moments[index].id) {
-						return { index : [index], content : this.moments[index] }
+					if(id == this.moments.data[index].id) {
+						return { index : [index], content : this.moments.data[index] }
 					}
 				}
 			}
@@ -203,16 +234,14 @@ export default {
 				if (this.show_vectors && this.selected_list.length == 1) {
 					id = this.selected_list[0]
 					let info = this.find_index_by_id(id)
-					console.log(info)
 					let index = info.index
 					let vector = info.content
 
 					await tableService.updateVector(id, values)
-					let vectors = this.vectors
-					let vec = await tableService.getVector(id)
+					let res = await tableService.getVector(id)
+					res = res.data
 
-					vectors[index] = vector_handler(vec)
-
+					this.vectors.data[index] = res
 				}
 				else if (!this.show_vectors && this.selected_list.length == 1) {
 					id = this.selected_list[0]
@@ -222,27 +251,27 @@ export default {
 
 					await tableService.updateVector(id, values)
 					let moments = this.moments
-					let vec = await tableService.getVector(id)
+					let res = await tableService.getVector(id)
+					res = res.data
 
-					moments[index] = moment_handler(vec)
+					this.moments[index] = res
 				}
 				else if (this.show_vectors) {
 					let res = await tableService.createVector(values)
-					id = res.data.id
-					let vector = new_vector_handler(id, values)
-					this.vectors.push(vector)
+					res = res.data
+					res = Object.assign({ check : false }, res)
+					this.vectors.data.push(res)
 				}
 				else {
-					let res = await tableService.createVector(values)
-					id = res.data.id
-					let moment = new_moment_handler(id, values)
-					this.moments.push(moment)
+					let res = await tableService.createMoment(values)
+					res = res.data
+					res = Object.assign({ check : false }, res)
+					this.moments.data.push(res)
 				}
 
 				this.edit_alert_variant = "success"
 				this.edit_alert_msg = "Successfully Edited!"
 
-				console.log("end")
 				this.$emit('done_modifying', id)
 			}
 			catch(e) {
@@ -304,7 +333,6 @@ export default {
 						count++
 					}
 				}
-					console.log(deleted_list)
 					this.$emit("deleted")
 			}
 			catch(e) {
@@ -321,46 +349,40 @@ export default {
 			let reference = "required|max:40|alpha_dash"
 			let numb = "required"
 			let new_schema = {}
-			let stc_ent_labels = []
+			let att = []
+
 			if (this.show_vectors) {
-				for (let i in this.vectors[0].val) {
-					let name = this.vectors[0].val[i][0]
-					let obj = {}
-					if (i%2 == 0) {
-						obj = { [name] : reference }
-					}
-					else {
-						obj = { [name] : numb }
-					}
-					new_schema = Object.assign(new_schema, obj)
-				}
+				att = this.vectors_attributes
 			}
 			else {
-				for (let i in this.moments[0].val) {
-					let name = this.moments[0].val[i][0]
-					let obj = {}
-					if (i%2 == 0) {
-						obj = { [name] : reference }
-					}
-					else {
-						obj = { [name] : numb }
-					}
-					new_schema = Object.assign(new_schema, obj)
-				}
+				att = this.moments_attributes
 			}
+
+			for (let i in att) {
+				let name = att[i]
+				let obj = {}
+				if (i%2 == 0) {
+					obj = { [name] : reference }
+				}
+				else {
+					obj = { [name] : numb }
+				}
+				new_schema = Object.assign(new_schema, obj)
+			}
+
+			console.log(new_schema)
 			return new_schema
-		}
+		},
+
 	},
 	
 	async mounted() {
 		this.edit_in_submission = 	true
 		this.edit_show_alert =		true
 
-		let vectors_page = []
-		let moments_page = []
 		try {
-			vectors_page = await tableService.allVectors()
-			moments_page = await tableService.allMoments()
+			this.vectors = await tableService.allVectors()
+			this.moments = await tableService.allMoments()
 
 			this.edit_alert_variant = "success"
 			this.edit_alert_msg = "Pages loaded!"
@@ -377,11 +399,12 @@ export default {
 			this.error_msg(e)
 		}
 
-		this.vectors = vector_page_handler(vectors_page)
-		this.moments = moment_page_handler(moments_page)
-
-		let tok = tableService.getToken()
-		console.log(tok)
+		for (let i in this.vectors.data) {
+			this.vectors.data[i] = Object.assign({ "check" : false }, this.vectors.data[i] )
+		}
+		for (let i in this.moments.data) {
+			this.moments.data[i] = Object.assign({ "check" : false }, this.moments.data[i] )
+		}
 	},
 	
 	watch: {
@@ -401,6 +424,11 @@ export default {
 					this.vectors[i].check = false
 				}
 			}
+
+			this.edit_in_submission =	false
+			this.edit_show_alert =		false
+			this.edit_alert_varianti =	"info"
+			this.edit_alert_msg =		"Loding!"
 		},
 
 		modifying(val) {
