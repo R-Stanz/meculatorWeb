@@ -144,7 +144,7 @@ export default {
 			edit_in_submission:	false,
 			edit_show_alert:	false,
 			edit_alert_variant:	"info",
-			edit_alert_msg:		"Loding!",
+			edit_alert_msg:		"Loading!",
 		}
 	},
 
@@ -215,7 +215,7 @@ export default {
 				}
 			}
 			else {
-				for (let index in this.moments) {
+				for (let index in this.moments.data) {
 					if(id == this.moments.data[index].id) {
 						return { index : [index], content : this.moments.data[index] }
 					}
@@ -249,12 +249,11 @@ export default {
 					let index = info.index
 					let moment = info.content
 
-					await tableService.updateVector(id, values)
-					let moments = this.moments
-					let res = await tableService.getVector(id)
+					await tableService.updateMoment(id, values)
+					let res = await tableService.getMoment(id)
 					res = res.data
 
-					this.moments[index] = res
+					this.moments.data[index] = res
 				}
 				else if (this.show_vectors) {
 					let res = await tableService.createVector(values)
@@ -308,28 +307,26 @@ export default {
 						let id = this.selected_list[count]
 						let res = await tableService.delVector(id)
 
-						for (let i in this.vectors) {
-							if (this.vectors[i].id == id) {
-								this.vectors.splice(i, 1)
+						for (let i in this.vectors.data) {
+							if (this.vectors.data[i].id == id) {
+								this.vectors.data.splice(i, 1)
 							}
 						}
 
-						deleted_list.push(res.data.id)
 						count++
 					}
 				}
 				else {
 					while (count < this.selected_list.length) {
 						let id = this.selected_list[count]
-						let res = await tableService.delVector(id)
+						let res = await tableService.delMoment(id)
 
-						for (let i in this.moments) {
-							if (this.moments[i].id == id) {
-								this.moments.splice(i, 1)
+						for (let i in this.moments.data) {
+							if (this.moments.data[i].id == id) {
+								this.moments.data.splice(i, 1)
 							}
 						}
 
-						deleted_list.push(res.data.id)
 						count++
 					}
 				}
@@ -370,7 +367,6 @@ export default {
 				new_schema = Object.assign(new_schema, obj)
 			}
 
-			console.log(new_schema)
 			return new_schema
 		},
 
@@ -428,7 +424,7 @@ export default {
 			this.edit_in_submission =	false
 			this.edit_show_alert =		false
 			this.edit_alert_varianti =	"info"
-			this.edit_alert_msg =		"Loding!"
+			this.edit_alert_msg =		"Loading!"
 		},
 
 		modifying(val) {

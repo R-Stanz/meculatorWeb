@@ -47,7 +47,7 @@ Strapi.
 | --- | --- | --- | --- | --- |
 | Users 1   | X |   | X |   |
 | Vectors 2 | X | X | X | X |
-| Moments 3 | X |   |   |   |
+| Moments 3 | X | X | X | X |
 
 > Lembre-se que é necessário implementar o CRUD de pelo menos duas entidades.
 
@@ -57,3 +57,7 @@ Strapi.
 | --- | --- |
 | GET | api/vectors/|
 | POST | api/vectors/ |
+| PUT | api/vectors/ |
+| GET | api/moments/|
+| POST | api/moments/ |
+| PUT | api/moments/ |

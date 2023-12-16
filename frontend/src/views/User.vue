@@ -31,8 +31,8 @@
 		:modifying="modifying"
 		:deleting="deleting"
 		@select="select"
-		@done_modifying="modifying=false; vectors_selected = []"
-		@deleted="deleting=!deleting"
+		@done_modifying="modifying=false; selected_list = []"
+		@deleted="deleting=false; selected_list = []"
 	></Tables>
 </div>
 </template>
