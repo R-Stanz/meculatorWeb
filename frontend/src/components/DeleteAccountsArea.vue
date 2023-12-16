@@ -37,7 +37,6 @@
 
 				<button
 				       type="submit"
-				       value="Delete"
 				       :disabled="del_in_submission"
 				>
 					Delete
@@ -53,6 +52,9 @@
 </style>
 
 <script>
+import { authenticationService } from "@/api/AuthenticationService"
+import { isAxiosError } from "axios"
+
 export default {
 	data() {
 		return {
@@ -68,19 +70,39 @@ export default {
 		}
 	},
 	methods: {
-		del(values) {
+		async del(values) {
 			this.del_show_alert = true
 			this.del_in_submission = true
 			this.del_alert_variant = "info"
 			this.del_alert_msg = "Account being deleted!"
 
-			this.del_alert_variant = "success"
-			this.del_alert_msg = "Account deleted!"
+			try {
+				//await authenticationService.getRole(values)
+				await authenticationService.delAcc(values)
+
+				this.del_alert_variant = "success"
+				this.del_alert_msg = "Account deleted!"
+
+				for (let i in values) {
+					values[i] = ""
+				}
+			}
+			catch(e) {
+				this.del_in_submission 	= false
+				this.del_alert_variant 	= "error"
+
+				if(isAxiosError(e)) {
+					this.del_alert_msg = e.response?.data.error.message
+				}
+				else if(e instanceof Error) {
+					this.del_alert_msg = e.message
+				}
+			}
 
 			setTimeout(function () {
 				this.del_in_submission = false
 				this.del_show_alert = false
-				}.bind(this), 3000)
+			}.bind(this), 3500)
 		},
 	},
 }

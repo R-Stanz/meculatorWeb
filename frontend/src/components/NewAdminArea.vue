@@ -21,6 +21,18 @@
 				/>
 				<ErrorMessage class="error" name="username" />
 
+				<label>E-mail:</label>				
+			</div>
+
+			<div class="camps">
+				<vee-field 
+					type="text"
+					name="email"
+					id="email"
+					placeholder="New Admin E-mail"
+				/>
+				<ErrorMessage class="error" name="email" />
+
 				<label>New Account Password:</label>				
 			</div>
 			
@@ -49,11 +61,15 @@
 </style>
 
 <script>
+import { authenticationService } from "@/api/AuthenticationService"
+import { isAxiosError } from "axios"
+
 export default {
 	data() {
 		return {
 			schema: {
 				username: "required|min:3|max:40|alpha_dash",
+				email:	  "required|min:3|max:40|email",
 				password: "required|min:6|max:50|"
 			},
 
@@ -64,19 +80,38 @@ export default {
 		}
 	},
 	methods: {
-		register(values) {
+		async register(values) {
 			this.reg_show_alert = true
 			this.reg_in_submission = true
 			this.reg_alert_variant = "info"
 			this.reg_alert_msg = "Account being created!"
 
-			this.reg_alert_variant = "success"
-			this.reg_alert_msg = "Account created!"
+			try {
+				await authenticationService.newAdmin(values)
+				this.reg_alert_variant = "success"
+				this.reg_alert_msg = "Account created!"
+			}
+			catch(e) {
+				this.reg_in_submission 	= false
+				this.reg_alert_variant 	= "error"
 
-			setTimeout(function () {
-				this.reg_in_submission = false
-				this.reg_show_alert = false
-				}.bind(this), 3000)
+				if(isAxiosError(e)) {
+					console.log(e.reponse)
+					this.reg_alert_msg = e.response.data
+				}
+				else if(e instanceof Error) {
+					this.reg_alert_msg = e.message
+				}
+			}
+			finally {
+				setTimeout(function () {
+					this.reg_in_submission = false
+					this.reg_show_alert = false
+					this.reg_alert_variant = "info"
+					this.reg_alert_msg = "Account being created!"
+				}.bind(this), 3500)
+			}
+
 		},
 	},
 }

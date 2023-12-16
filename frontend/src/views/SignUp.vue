@@ -73,7 +73,8 @@
 </style>
 
 <script>
-import { api } from "@/api"
+import { authenticationService } from "@/api/AuthenticationService"
+import { isAxiosError } from "axios"
 
 export default {
 	data() {
@@ -98,13 +99,7 @@ export default {
 			this.reg_alert_msg 	= "Account being created!"
 
 			try {
-				console.log(this.username, this.password, this.email)
-				await api.post(`/auth/local/register`, {
-					username: values.username, 
-					password: values.password, 
-					email: values.email, 
-					role: 1
-				})
+				await authenticationService.signUp(values)
 
 				this.reg_alert_variant 	= "success"
 				this.reg_alert_msg 	= "Account created!"
@@ -113,12 +108,19 @@ export default {
 							this.$router.push({ name: "login" }
 				)}.bind(this), 1000)
 			}
-
-			catch(error) {
+			catch(e) {
 				console.log(error)
 				this.reg_in_submission 	= false
 				this.reg_alert_variant 	= "error"
 				this.reg_alert_msg 	= error.message
+
+				if(isAxiosError(e)) {
+					this.edit_alert_msg = e.response?.data.error.message
+				}
+				else if(e instanceof Error) {
+					this.edit_alert_msg = e.message
+				}
+
 				setTimeout(function () {
 							this.reg_show_alert 	= false
 				}.bind(this), 3500)

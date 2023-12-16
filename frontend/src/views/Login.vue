@@ -65,7 +65,6 @@
 </style>
 
 <script>
-import { api } from "@/api"
 import { authenticationService } from "@/api/AuthenticationService"
 import { isAxiosError } from "axios"
 
@@ -109,11 +108,18 @@ export default {
 				}
 			}
 
-			catch(error) {
+			catch(e) {
 
 				this.login_in_submission = false
 				this.login_alert_variant = "error"
-				this.login_alert_msg	 = error.message
+
+				if(isAxiosError(e)) {
+					this.login_alert_msg = e.response?.data.error.message
+				}
+				else if(e instanceof Error) {
+					this.login_alert_msg = e.message
+				}
+
 				setTimeout(function () {
 					this.login_show_alert	 = false
 				}.bind(this), 3500)

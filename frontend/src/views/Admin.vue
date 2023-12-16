@@ -26,9 +26,11 @@ export default {
 		NewAdmin,
 		DelAccounts,
 	},
+	/*
 	name: "Admin",
 	beforeRouteEnter(to, from, next) {
 		const store = useUserStore()
 	}
+	*/
 }
 </script>
