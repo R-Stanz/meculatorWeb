@@ -4,6 +4,7 @@ import Login from '@/views/Login.vue'
 import SignUp from '@/views/SignUp.vue'
 import Admin from '@/views/Admin.vue'
 import User from '@/views/User.vue'
+import { useUserStore } from '@/stores/userStore'
 
 const routes = [
 	{

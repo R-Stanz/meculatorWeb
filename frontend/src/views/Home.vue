@@ -40,3 +40,13 @@
 
 <style scoped src="@/assets/css/home.css">
 </style>
+
+<!--
+<script>
+import { api } from "@/api"
+import { useUserStore } from "@/stores/userStore"
+
+export default {
+}
+</script>
+-->

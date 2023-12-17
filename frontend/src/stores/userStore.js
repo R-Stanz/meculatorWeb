@@ -7,7 +7,7 @@ export const useUserStore = defineStore('user', {
 	},
 	actions: {
 		logout() {
-			this.user.value = {}
+			this.user = {}
 		},
 	}
 })

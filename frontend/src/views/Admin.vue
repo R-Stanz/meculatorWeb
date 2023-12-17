@@ -26,10 +26,26 @@ export default {
 		NewAdmin,
 		DelAccounts,
 	},
-	/*
-	name: "Admin",
+
+	name: "admin",
 	beforeRouteEnter(to, from, next) {
-		const store = useUserStore()
+		const userStore = useUserStore()
+		if (userStore.user.role == "admin") {
+			next()
+		}
+		else {
+			next({ name : "home" })
+		}
+	},
+	/*
+	beforeRouteLeave(to, from, next) {
+		const userStore = useUserStore()
+		console.log(userStore.user.role)
+		if (userStore.user.role == "admin") {
+		}
+		else {
+			next()
+		}
 	}
 	*/
 }

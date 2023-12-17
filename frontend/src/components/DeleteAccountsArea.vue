@@ -77,15 +77,10 @@ export default {
 			this.del_alert_msg = "Account being deleted!"
 
 			try {
-				//await authenticationService.getRole(values)
 				await authenticationService.delAcc(values)
 
 				this.del_alert_variant = "success"
 				this.del_alert_msg = "Account deleted!"
-
-				for (let i in values) {
-					values[i] = ""
-				}
 			}
 			catch(e) {
 				this.del_in_submission 	= false

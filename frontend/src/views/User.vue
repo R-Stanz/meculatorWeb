@@ -19,6 +19,7 @@
 		<router-link
 			id="log_out"
 			:to="{ name: 'home' }"
+			@click="userStore.logout"
 		>
 				<i class="bi bi-arrow-bar-left"></i>
 		</router-link>
@@ -43,6 +44,7 @@
 <script>
 import Menu from '@/components/Menu.vue'
 import Tables from '@/components/Tables.vue'
+import { useUserStore } from '@/stores/userStore'
 
 export default {
 	components: {
@@ -55,6 +57,7 @@ export default {
 			selected_list: [],
 			modifying: false,
 			deleting: false,
+			userStore: useUserStore()
 		}
 	},
 
@@ -84,6 +87,18 @@ export default {
 	},
 
 	watch: {
+	},
+
+	name: "User",
+	beforeRouteEnter(to, from, next) {
+		const userStore = useUserStore()
+
+		if (userStore.user.role == "authenticated") {
+			next()
+		}
+		else {
+			next({ name : "home" })
+		}
 	}
 }
 </script>

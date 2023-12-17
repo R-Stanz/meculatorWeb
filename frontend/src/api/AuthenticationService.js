@@ -42,19 +42,10 @@ class AuthenticationService {
 	}
 
 	async delAcc(values) {
-		console.log("inside")
 		const userStore = useUserStore()
-		const res = await api.get('/users/me', {
-			headers: {
-				Authorization : `Bearer ${userStore.token}`
-			}
-		})
-
-		const username = res.data.username
-		const password = values.password
 
 		let body = { 
-			"identifier" : res.data.username, 
+			"identifier" : userStore.user.username, 
 			"password" : values.password 
 		}
 
@@ -65,11 +56,12 @@ class AuthenticationService {
 				Authorization : `Bearer ${userStore.token}`
 			}
 		})
-		console.log(users)
+
 		let id = 0
 		for (let i in users.data) {
 			if (values.username == users.data[i].username) {
 				id = users.data[i].id
+				break
 			}
 		}
 
