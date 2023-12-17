@@ -45,9 +45,9 @@ Strapi.
 
 | Entidade| Criação | Leitura | Atualização | Remoção |
 | --- | --- | --- | --- | --- |
-| Users 1   | X |   | X |   |
-| Vectors 2 | X | X | X | X |
-| Moments 3 | X | X | X | X |
+| Users 1   |  X |  X |    | X |
+| Vectors 2 |  X |  X |  X | X |
+| Moments 3 |  X |  X |  X | X |
 
 > Lembre-se que é necessário implementar o CRUD de pelo menos duas entidades.
 
