@@ -45,6 +45,7 @@
 import Menu from '@/components/Menu.vue'
 import Tables from '@/components/Tables.vue'
 import { useUserStore } from '@/stores/userStore'
+import { useTableStore } from '@/stores/tableStore'
 
 export default {
 	components: {
@@ -57,7 +58,7 @@ export default {
 			selected_list: [],
 			modifying: false,
 			deleting: false,
-			userStore: useUserStore()
+			userStore: useUserStore(),
 		}
 	},
 

@@ -10,6 +10,7 @@ class AuthenticationService {
 	}
 
 	async newAdmin(values) {
+		await api.post(`/auth/local/register`, values)
 		values = Object.assign({ role : 3 }, values)
 	}
 	

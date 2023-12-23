@@ -84,7 +84,7 @@
 		<button
 			v-if="!show_vectors"
 			type="button"
-			@click="$emit('toggle_tables')"
+			@click="toggle_tables"
 			class="menu"
 		><li>
 			Vectors Table
@@ -93,7 +93,7 @@
 		<button 
 			v-else
 			type="button"
-			@click="$emit('toggle_tables')"
+			@click="toggle_tables"
 			class="menu"
 		><li>
 			Momenta Table
@@ -105,7 +105,13 @@
 </style>
 
 <script>
+import { useTableStore } from "@/stores/tableStore"
+
 export default {
+	setup() {
+		const tableStore = useTableStore()
+		return { tableStore }
+	},
 	props: {
 		show_vectors: Boolean,
 		selected_list: Array,
@@ -121,6 +127,9 @@ export default {
 		}
 	},
 	methods: {
+		toggle_tables() {
+			this.tableStore.toggle()
+		}
 	},
 	watch: {
 		selected_list: {
