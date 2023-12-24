@@ -1,7 +1,7 @@
 <template>
 	<ul id="side_nav">
 		<button
-			v-if="show_vectors && single_selected && !modifying"
+			v-if="tableStore.show_vectors && tableStore.checked.length == 1 && !tableStore.locked"
 			type="button"
 			@click="$emit('modify')"			
 			class="menu"
@@ -10,7 +10,7 @@
 		</li></button>
 
 		<button
-			v-if="!show_vectors && single_selected && !modifying"
+			v-if="!tableStore.show_vectors && tableStore.checked.length == 1 && !tableStore.locked"
 			type="button"
 			@click="$emit('modify')"			
 			class="menu"
@@ -19,7 +19,7 @@
 		</li></button>
 
 		<button
-			v-if="show_vectors && vector_pair_selected"
+			v-if="tableStore.show_vectors && tableStore.checked.length == 2"
 			type="button"
 			@click="vectors_result"			
 			class="menu"
@@ -28,7 +28,7 @@
 		</li></button>
 
 		<button
-			v-if="show_vectors && couple_selected"
+			v-if="tableStore.show_vectors && tableStore.checked.length > 1"
 			type="button"
 			@click="vectors_result"			
 			class="menu"
@@ -37,7 +37,7 @@
 		</li></button>
 
 		<button
-			v-if="!show_vectors && couple_selected"
+			v-if="!tableStore.show_vectors && tableStore.checked.length > 1"
 			type="button"
 			@click="moments_result"			
 			class="menu"
@@ -46,7 +46,7 @@
 		</li></button>
 
 		<button
-			v-if="show_vectors && (single_selected || couple_selected)"
+			v-if="tableStore.show_vectors && tableStore.checked.length > 0"
 			type="button"
 			@click="$emit('delete')"			
 			class="menu"
@@ -55,7 +55,7 @@
 		</li></button>
 
 		<button
-			v-if="!show_vectors && (single_selected || couple_selected)"
+			v-if="!tableStore.show_vectors && tableStore.checked.length > 0"
 			type="button"
 			@click="$emit('delete')"			
 			class="menu"
@@ -64,7 +64,7 @@
 		</li></button>
 
 		<button
-			v-if="show_vectors && !modifying"
+			v-if="tableStore.show_vectors && !tableStore.locked"
 			type="button"
 			@click="$emit('creation')"			
 			class="menu"
@@ -73,7 +73,7 @@
 		</li></button>
 		
 		<button
-			v-if="!show_vectors && !modifying"
+			v-if="!tableStore.show_vectors && !tableStore.locked"
 			type="button"
 			@click="$emit('creation')"
 			class="menu"
@@ -82,7 +82,7 @@
 		</li></button>
 
 		<button
-			v-if="!show_vectors"
+			v-if="!tableStore.show_vectors"
 			type="button"
 			@click="toggle_tables"
 			class="menu"
@@ -112,13 +112,6 @@ export default {
 		const tableStore = useTableStore()
 		return { tableStore }
 	},
-	props: {
-		show_vectors: Boolean,
-		selected_list: Array,
-		modifying: Boolean,
-		creating: Boolean,
-	},
-	emits: ["toggle_tables", "modify", "creation", "delete"],
 	data() {
 		return {
 			single_selected: 	false,
@@ -134,37 +127,37 @@ export default {
 	watch: {
 		selected_list: {
 			handler (val) {
-				if (this.show_vectors && val.length == 1) {
+				if (this.tableStore.show_vectors && val.length == 1) {
 					this.single_selected = true
 					this.vector_pair_selected = false
 					this.couple_selected = false
 				}
-				else if (this.show_vectors && val.length == 2) {
+				else if (this.tableStore.show_vectors && val.length == 2) {
 					this.single_selected = false
 					this.vector_pair_selected = true
 					this.couple_selected = true
 				}
-				else if (this.show_vectors && val.length > 0) {
+				else if (this.tableStore.show_vectors && val.length > 0) {
 					this.single_selected = false
 					this.vector_pair_selected = false
 					this.couple_selected = true
 				}
-				else if (this.show_vectors) {
+				else if (this.tableStore.show_vectors) {
 					this.single_selected = false
 					this.vector_pair_selected = false
 					this.couple_selected = false
 				}
-				else if (!this.show_vectors && val.length == 1) {
+				else if (!this.tableStore.show_vectors && val.length == 1) {
 					this.single_selected = true
 					this.vector_pair_selected = false
 					this.couple_selected = false
 				}
-				else if (!this.show_vectors && val.length > 0) {
+				else if (!this.tableStore.show_vectors && val.length > 0) {
 					this.single_selected = false
 					this.vector_pair_selected = false
 					this.couple_selected = true
 				}
-				else if (!this.show_vectors) {
+				else if (!this.tableStore.show_vectors) {
 					this.single_selected = false
 					this.vector_pair_selected = false
 					this.couple_selected = false

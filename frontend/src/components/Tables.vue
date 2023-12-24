@@ -48,7 +48,7 @@
 					<input 
 						type="checkbox" 
 						v-model="item.check"
-						@click="tableStore.check_id(item.id)" 
+						@click="tableStore.check(item.id)" 
 					/>
 				</td>
 				<td
@@ -77,20 +77,8 @@ export default {
 		const tableStore = useTableStore()
 		return { tableStore }
 	},
-
-	props: {
-		show_vectors: Boolean,
-		selected_list: Array,
-		modifying: Boolean,
-		deleting: Boolean,
-	},      
-	
-	emits: ["selected_list", "done_modifying", "deleted", "select"],
-	
 	data() {
 		return {
-			tableStore: useTableStore(),
-
 			edit_in_submission:	false,
 			edit_show_alert:	false,
 			edit_alert_variant:	"info",
@@ -177,8 +165,5 @@ export default {
 		await this.tableStore.loadTables()
 	      	console.log(this.tableStore.momentStore.table)
 	},
-	
-	watch: {
-	}
 }
 </script>

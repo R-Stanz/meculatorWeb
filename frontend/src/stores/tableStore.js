@@ -8,6 +8,7 @@ export const useTableStore = defineStore('table', {
 		momentStore: useMomentStore(),
 		show_vectors: true,
 		locked: false,
+		checked: [],
 	}),
 	getters: {
 	},
@@ -34,13 +35,31 @@ export const useTableStore = defineStore('table', {
 			return currentStore.table
 		},
 
-		toggle () {
+		toggle() {
 			const currentStore = this.get_currentStore()
 			currentStore.uncheck()
 
 			this.locked = false
+			this.uncheck_all()
 			this.show_vectors = !this.show_vectors
-			console.log(this.show())
+		},
+
+		uncheck_all() {
+			for (const id of this.checked) {
+				this.uncheck(id)
+			}
+		},
+
+		uncheck(id) {
+			const currentStore = this.get_currentStore()
+			for (const i of currentStore.table.data) {
+				if (id == i.id) {
+					i.check = false
+					break
+				}
+			}
+
+			this.checked = this.checked.filter(item => item !== id)
 		},
 
 		modify() {
@@ -60,6 +79,16 @@ export const useTableStore = defineStore('table', {
 		labels() {
 			const currentStore = this.get_currentStore()
 			return currentStore.labels
+		},
+
+		check(id) {
+			const index = this.checked.indexOf(id)
+			if (index > -1) {
+				this.checked = this.checked.filter(item => item !== id)
+			}
+			else {
+				this.checked.push(id)
+			}
 		}
 
 	}
