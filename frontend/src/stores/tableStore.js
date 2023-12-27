@@ -47,7 +47,7 @@ export const useTableStore = defineStore('table', {
 		},
 
 		schema: (state) => { 
-			let reference = "required|max:40|alpha_dash"
+			let reference = "required|max:40"
 			let numb = "required"
 			const att_list = state.attributes
 			let schema = {}
