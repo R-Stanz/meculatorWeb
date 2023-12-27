@@ -41,11 +41,15 @@ main {
 	}
 
 	.inputs_area {
-		display: inline-grid;
+		display: inline;
 	}
 
 	.input {
 		max-width: 6vw;
+	}
+
+	#is_torque_area {
+		display: flex;
 	}
 
 	.required {

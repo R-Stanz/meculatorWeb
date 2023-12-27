@@ -40,23 +40,24 @@ export const useVectorStore = defineStore('vector', {
 	},
 	actions: {
 		async load() {
-			try {
-				this.table = await tableService.allVectors()
-
-				for (let i in this.table.data) {
-					this.table.data[i] = Object.assign({ "check" : false }, this.table.data[i])
-				}
-			}
-			catch (e) {
-				console.log(e) 
+			this.table = await tableService.allVectors()
+			for (let i in this.table.data) {
+				this.table.data[i] = Object.assign({ "check" : false }, this.table.data[i])
 			}
 			return this.table
 		},
 
-		uncheck() {
-			for (let i in this.table) {
-				this.table[i].check = false
-			}
+		async create(values) {
+			return await tableService.createVector(values)
+		},
+
+		async edit(values, id) {
+			await tableService.updateVector(id, values)
+			return await tableService.getVector(id)
+		},
+
+		async delete(id) {
+			await tableService.delVector(id)
 		},
 	}
 })

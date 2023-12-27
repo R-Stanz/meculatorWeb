@@ -5,22 +5,38 @@
 			v-if="edit_show_alert"
 		> {{ edit_alert_msg }}
 		</div>
-		<vee-form v-if="tableStore.locked" id="form" :validation-schema="schema" @submit="tableStore.apply()">
+		<vee-form v-if="tableStore.locked" id="form" :validation-schema="tableStore.schema" @submit="tableStore.apply">
 			<div id="all_inputs_area">
 				<div 
 					class="inputs_area"
-					v-for="(info, index) in input_info()" 
+					v-for="(info, index) in tableStore.input_info" 
 					:key="index"
 				>
+					<vee-field 
+						v-if="info.attribute != 'is_torque'"
+						:name="info.attribute"
+						:placeholder="info.placeholder"
+						:id="info.attribute"
+						:type="info.type"
+						class="input"
+					>
+					</vee-field>
+
+					<div id="is_torque_area" v-else>
+						<p>Is torque?</p>
 						<vee-field 
-							:name="info.attribute"
-							:placeholder="info.placeholder"
-							:id="info.attribute"
-							:type="info.type"
+							name="is_torque"
+							placeholder="Is torque?"
+							id="is_torque"
+							as="select"
 							class="input"
 						>
+							<option value="true">Yes</option>
+							<option value="false">No</option>
 						</vee-field>
-					<ErrorMessage class="required" :name="info.name" />
+					</div>
+					<ErrorMessage class="required" :name="info.attribute" />
+
 				</div>
 			</div>
 
@@ -35,14 +51,14 @@
 		<table>
 			<tr>
 				<td 
-					v-for="label in tableStore.labels()"
+					v-for="label in tableStore.labels"
 				>
 					{{ label }}
 				</td>
 			</tr>
 
 			<tr
-				v-for="(item, index) in tableStore.show().data"
+				v-for="(item, index) in tableStore.show.data"
 			>
 				<td v-if="!tableStore.locked">
 					<input 
@@ -52,7 +68,7 @@
 					/>
 				</td>
 				<td
-					v-for="(att, index) in tableStore.attributes()"
+					v-for="(att, index) in tableStore.attributes"
 					v-bind:key="index"
 				>
 					{{ item.attributes[att] }}
@@ -84,81 +100,6 @@ export default {
 			edit_alert_variant:	"info",
 			edit_alert_msg:		"Loading!",
 		}
-	},
-
-	methods: {
-
-		async delete() {
-
-			this.edit_in_submission = 	true
-			this.edit_show_alert = 		true
-			this.edit_alert_variant = 	"info"
-			this.edit_alert_msg =		"Submiting!"
-
-			try {
-				let deleted_list = []
-				let count = 0
-				if (this.show_vectors) {
-					while (count < this.selected_list.length) {
-						let id = this.selected_list[count]
-						let res = await tableService.delVector(id)
-
-						for (let i in this.vectors.data) {
-							if (this.vectors.data[i].id == id) {
-								this.vectors.data.splice(i, 1)
-							}
-						}
-
-						count++
-					}
-				}
-				else {
-					while (count < this.selected_list.length) {
-						let id = this.selected_list[count]
-						let res = await tableService.delMoment(id)
-
-						for (let i in this.moments.data) {
-							if (this.moments.data[i].id == id) {
-								this.moments.data.splice(i, 1)
-							}
-						}
-
-						count++
-					}
-				}
-					this.$emit("deleted")
-			}
-			catch(e) {
-				this.error_msg(e)
-			}
-			finally {
-				this.edit_in_submission = false
-			}
-		}
-	},
-	
-	computed: {
-		schema() {
-			let reference = "required|max:40|alpha_dash"
-			let numb = "required"
-			let new_schema = {}
-			let att = tableStore.attributes()
-
-			for (let i in att) {
-				let name = att[i]
-				let obj = {}
-				if (i%2 == 0) {
-					obj = { [name] : reference }
-				}
-				else {
-					obj = { [name] : numb }
-				}
-				new_schema = Object.assign(new_schema, obj)
-			}
-
-			return new_schema
-		},
-
 	},
 	
 	async mounted() {

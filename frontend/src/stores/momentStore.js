@@ -41,23 +41,25 @@ export const useMomentStore = defineStore('moment', {
 	},
 	actions: {
 		async load() {
-			try {
-				this.table = await tableService.allMoments()
+			this.table = await tableService.allMoments()
 
-				for (let i in this.table.data) {
-					this.table.data[i] = Object.assign({ "check" : false }, this.table.data[i])
-				}
-			}
-			catch (e) {
-				console.log(e)
+			for (let i in this.table.data) {
+				this.table.data[i] = Object.assign({ "check" : false }, this.table.data[i])
 			}
 			return this.table
 		},
 
-		uncheck() {
-			for (let i in this.table) {
-				this.table[i].check = false
-			}
-		}
+		async create(values) {
+			return await tableService.createMoment(values)
+		},
+
+		async edit(values, id) {
+			await tableService.updateMoment(id, values)
+			return await tableService.getMoment(id)
+		},
+
+		async delete(id) {
+			await tableService.delMoment(id)
+		},
 	}
 })
